@@ -1,6 +1,8 @@
 import {createElement} from './utils'
 
-const Card = (imageSrc, parentNode) => {
+const DEFAULT_BLANK_IMAGE = 'images/blank.png'
+
+const Card = (imageSrc, parentNode, id) => {
   let image;
   let player;
   let cardDOM;
@@ -39,23 +41,27 @@ const Card = (imageSrc, parentNode) => {
     player = null
   }
 
+  function getID() {
+    return id
+  }
+
   function getDOM() {
     return cardDOM
   }
 
-  return {build, setImage, buildPlayer, removePlayer, hasPlayer, getPlayer, getDOM}
+  return {build, setImage, buildPlayer, removePlayer, hasPlayer, getPlayer, getDOM, getID}
 }
 
-const FlippableCard = (hiddenImageSrc, originalImageSrc, parentNode) => {
-  let {build, setImage, getDOM} = Card(hiddenImageSrc, parentNode)
+const FlippableCard = (originalImageSrc, parentNode, id) => {
+  let {build, setImage, getDOM, getID} = Card(DEFAULT_BLANK_IMAGE, parentNode, id)
   let flipped = false
 
   function flip() {
     flipped = !flipped
-    setImage(flipped ? originalImageSrc : hiddenImageSrc)
+    setImage(flipped ? originalImageSrc : DEFAULT_BLANK_IMAGE)
   }
 
-  return {build, setImage, flip}
+  return {build, setImage, flip, getID}
 }
 
 export {Card, FlippableCard}

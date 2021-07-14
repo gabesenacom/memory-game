@@ -47,7 +47,7 @@ export const memoryCard = (() => {
   function fillPositions() {
     
     for(let i = 0; i < 10; i++) {
-      let card = Card(`https://picsum.photos/10${i}`, cardListDOM)
+      let card = Card(`https://wpicsum.photos/10${i}`, cardListDOM, i)
       addCard(card)
     }
   }
