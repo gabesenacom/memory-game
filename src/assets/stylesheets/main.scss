@@ -8,3 +8,41 @@ h1 {
   font-size: 3rem;
   text-align: center;
 }
+
+#card-list {
+  display: flex;
+}
+
+#flippable-card-list {
+  display: flex;
+  width: 680px;
+  height: 500px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 0 auto;
+}
+
+#flippable-card-list .card {
+  background-color: initial !important;
+}
+
+.card {
+  min-height: 100px;
+  min-width: 100px;
+  max-height: 100px;
+  max-width: 100px;
+  background-color: blue;
+  margin: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.player-image {
+  height: 50px;
+  width: 50px;
+  max-height: 50px;
+  max-width: 50px;
+  background-color: red;
+}
