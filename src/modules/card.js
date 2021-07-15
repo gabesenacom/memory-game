@@ -1,19 +1,21 @@
 import {createElement} from './utils'
 
-const Card = (imageSrc, parentNode) => {
+const DEFAULT_BLANK_IMAGE = 'images/blank.png'
+
+const Card = (imageSrc, parentNode, id) => {
   let image;
   let player;
   let cardDOM;
 
   function build(className = 'card') {
     cardDOM = createElement('div', className, parentNode)
+    cardDOM.setAttribute('data-id', id)
     setImage(imageSrc)
     return cardDOM
   }
 
   function setImage(imageSrc) {
     cardDOM.style.backgroundImage = `url('${imageSrc}')`
-    console.log(">>", cardDOM.style.backgroundImage)
   }
 
   function buildPlayer(playerObject) {
@@ -22,8 +24,6 @@ const Card = (imageSrc, parentNode) => {
       'dom': createElement('img', 'player-image', cardDOM)
     }
     player.dom.src = playerObject.imageSrc
-
-    console.log("building player", playerObject, "player card", player)
   }
 
   function hasPlayer() {
@@ -39,23 +39,35 @@ const Card = (imageSrc, parentNode) => {
     player = null
   }
 
+  function getId() {
+    return id
+  }
+
   function getDOM() {
     return cardDOM
   }
 
-  return {build, setImage, buildPlayer, removePlayer, hasPlayer, getPlayer, getDOM}
+  function getImageSrc() {
+    return imageSrc
+  }
+
+  return {build, setImage, buildPlayer, removePlayer, hasPlayer, getPlayer, getDOM, getId, getImageSrc}
 }
 
-const FlippableCard = (hiddenImageSrc, originalImageSrc, parentNode) => {
-  let {build, setImage, getDOM} = Card(hiddenImageSrc, parentNode)
+const FlippableCard = (originalImageSrc, parentNode, id) => {
+  let {build, setImage, getDOM, getId, getImageSrc} = Card(DEFAULT_BLANK_IMAGE, parentNode, id)
   let flipped = false
 
   function flip() {
     flipped = !flipped
-    setImage(flipped ? originalImageSrc : hiddenImageSrc)
+    setImage(flipped ? originalImageSrc : DEFAULT_BLANK_IMAGE)
   }
 
-  return {build, setImage, flip}
+  function getRealImageSrc() {
+    return originalImageSrc
+  }
+
+  return {build, setImage, flip, getDOM, getId, getRealImageSrc}
 }
 
 export {Card, FlippableCard}
