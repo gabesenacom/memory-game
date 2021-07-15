@@ -1,121 +1,102 @@
-document.addEventListener('DOMContentLoaded', () => {
+import {Card} from './card'
 
-    const cardArray = [
-        {
-            name: 'animal1',
-            img: 'images/animal1.png'
-        },
-        {
-            name: 'animal1',
-            img: 'images/animal1.png'
-        },
-        {
-            name: 'animal2',
-            img: 'images/animal2.png'   
-        },
-        {
-            name: 'animal2',
-            img: 'images/animal2.png'
-        },
-        {
-            name: 'animal3',
-            img: 'images/animal3.png'
-        },
-        {
-            name: 'animal3',
-            img: 'images/animal3.png'
-        },
-        {
-            name: 'animal4',
-            img: 'images/animal4.png'
-        },
-        {
-            name: 'animal4',
-            img: 'images/animal4.png'
-        },
-        {
-            name: 'animal5',
-            img: 'images/animal5.png'
-        },
-        {
-            name: 'animal5',
-            img: 'images/animal5.png'
-        },
-        {
-            name: 'animal6',
-            img: 'images/animal6.png'
-        },
-        {
-            name: 'animal6',
-            img: 'images/animal6.png'
-        },
-        {
-            name: 'animal7',
-            img: 'images/animal7.png'
-        },
-        {
-            name: 'animal7',
-            img: 'images/animal7.png'
-        },
-    ]
-  cardArray.sort(() => 0.5 - Math.random())
+export const cardListDOM = document.getElementById("card-list")
+export const flippableCardListDOM = document.getElementById("flippable-card-list")
+
+export const memoryCard = (() => {
+  const NUM_PLAYERS = 4
+
+  const cards = []
+  let flippableCards = []
+
+  function addCard(card) {
+    cards.push(card)
+    card.build()
+  }
+
+  function addFlippableCard(card) {
+    flippableCards.push(card)
+    card.build()
+  }
+
+  function addPlayer(player, position) {
+    let card = getCard(position)
+    card.buildPlayer(player)
+  }
+
+  function removeFlippableCard(card) {
+    flippableCards = flippableCards.filter((refCard) => refCard != card)
+    card.getDOM().remove()
+  }
+
+  function getCard(position) {
+    return cards[position]
+  }
+
+  function getFlippableCard(position) {
+    return flippableCards[position]
+  }
+
+  function getFlippableCards() {
+    return flippableCards
+  }
+
+  function getCards() {
+    return cards
+  }
+
+  // TEST ONLY
+  fillPositions()
   
-    const grid = document.querySelector('.grid')
-    const resultDisplay = document.querySelector('#result')
-    var cardsChosen = []
-    var cardsChosenId = []
-    var cardsWon = []
-    //create board
-    function createBoard() {
-        for (let i = 0; i < cardArray.length; i++){
-            var card = document.createElement('img')
-            card.setAttribute('src', 'images/blank.png')
-            card.setAttribute('data-id', i)
-            card.addEventListener('click', flipCard)
-            grid.appendChild(card)
-        }
+  function fillPositions() {
+    
+    for(let i = 0; i < 10; i++) {
+      let card = Card(`https://wpicsum.photos/10${i}`, cardListDOM, i)
+      addCard(card)
     }
+  }
+
+  return {getCards, getFlippableCards, addPlayer, addFlippableCard, addCard, NUM_PLAYERS, removeFlippableCard}
+})()
+
+export function addPlayer(player) {
+  if(!canAddNewPlayer()) return
   
-    //check for matches
-    function checkForMatch() {
-        var cards = document.querySelectorAll('img')
-        const optionOneId = cardsChosenId[0]
-        const optionTwoId = cardsChosenId[1]
-        if(optionOneId == optionTwoId) {
-            cards[optionOneId].setAttribute('src', 'images/blank.png')
-            cards[optionTwoId].setAttribute('src', 'images/blank.png')
-            alert('You have clicked the same image!')
-          }
-          else if (cardsChosen[0] === cardsChosen[1]) {
-            alert('You found a match')
-            cards[optionOneId].setAttribute('src', 'images/white.png')
-            cards[optionTwoId].setAttribute('src', 'images/white.png')
-            cards[optionOneId].removeEventListener('click', flipCard)
-            cards[optionTwoId].removeEventListener('click', flipCard)
-            cardsWon.push(cardsChosen)
-          } else {
-            cards[optionOneId].setAttribute('src', 'images/blank.png')
-            cards[optionTwoId].setAttribute('src', 'images/blank.png')
-            alert('Sorry, try again')
-          }
-          cardsChosen = []
-          cardsChosenId = []
-          resultDisplay.textContent = cardsWon.length
-          if  (cardsWon.length === cardArray.length/2) {
-            resultDisplay.textContent = 'Congratulations! You found them all!'
-          }
-        }
-  
-    //flip card
-    function flipCard() {
-        var cardId = this.getAttribute('data-id')
-        cardsChosen.push(cardArray[cardId].name)
-        cardsChosenId.push(cardId)
-        this.setAttribute('src', cardArray[cardId].img)
-        if (cardsChosen.length === 2) {
-            setTimeout(checkForMatch, 500)
-        }
+  let validCards = getEmptyCards()
+  for(let card of validCards) {
+    if(addPlayerByCard(player, card))
+      return true
+  }
+  return false
+}
+
+function canAddNewPlayer() {
+  let players = memoryCard.getCards().filter((card) => card.player).length
+  return players < memoryCard.NUM_PLAYERS
+}
+
+function getEmptyCards() {
+  let maxPlayers = memoryCard.getCards().length
+  let positionGap = Math.round(maxPlayers / memoryCard.NUM_PLAYERS)
+  let positions = []
+  for(let i = 0; i < maxPlayers; i += positionGap) {
+    let card = memoryCard.getCards()[i]
+    if(!card.hasPlayer()) {
+      positions.push(i)
     }
+  }
+  return positions
+}
+
+function addPlayerByCard(player, cardPosition) {
+  if(!isValidCardToAddPlayer(cardPosition)) return false
   
-    createBoard()
-  })
+  memoryCard.addPlayer(player, cardPosition)
+  return true
+}
+
+function isValidCardToAddPlayer( cardPosition) {
+  let card = memoryCard.getCards()[cardPosition]
+  return !card || !card.player
+}
+>>>>>>> development
