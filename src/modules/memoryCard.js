@@ -1,13 +1,13 @@
 import {Card} from './card'
 
+export const cardListDOM = document.getElementById("card-list")
+export const flippableCardListDOM = document.getElementById("flippable-card-list")
+
 export const memoryCard = (() => {
   const NUM_PLAYERS = 4
 
   const cards = []
-  const flippableCards = []
-
-  const cardListDOM = document.getElementById("card-list")
-  const flippableCardListDOM = document.getElementById("flippable-card-list")
+  let flippableCards = []
 
   function addCard(card) {
     cards.push(card)
@@ -22,7 +22,11 @@ export const memoryCard = (() => {
   function addPlayer(player, position) {
     let card = getCard(position)
     card.buildPlayer(player)
-    console.log("player", player.name, "added on DOM")
+  }
+
+  function removeFlippableCard(card) {
+    flippableCards = flippableCards.filter((refCard) => refCard != card)
+    card.getDOM().remove()
   }
 
   function getCard(position) {
@@ -52,7 +56,7 @@ export const memoryCard = (() => {
     }
   }
 
-  return {getCards, getFlippableCards, addPlayer, addFlippableCard, addCard, NUM_PLAYERS}
+  return {getCards, getFlippableCards, addPlayer, addFlippableCard, addCard, NUM_PLAYERS, removeFlippableCard}
 })()
 
 export function addPlayer(player) {
