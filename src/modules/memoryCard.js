@@ -99,4 +99,3 @@ function isValidCardToAddPlayer( cardPosition) {
   let card = memoryCard.getCards()[cardPosition]
   return !card || !card.player
 }
->>>>>>> development
