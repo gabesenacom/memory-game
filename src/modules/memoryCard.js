@@ -1,7 +1,9 @@
-import {Card} from './card'
+import { Card } from './card'
 
-export const cardListDOM = document.getElementById("card-list")
-export const flippableCardListDOM = document.getElementById("flippable-card-list")
+export const cardListDOM = document.getElementById('card-list')
+export const flippableCardListDOM = document.getElementById(
+  'flippable-card-list'
+)
 
 export const memoryCard = (() => {
   const NUM_PLAYERS = 4
@@ -9,43 +11,64 @@ export const memoryCard = (() => {
   const cards = []
   let flippableCards = []
 
-  function addCard(card) {
+  function addCard (card) {
     cards.push(card)
     card.build()
   }
 
-  function addFlippableCard(card) {
+  function addFlippableCard (card) {
     flippableCards.push(card)
     card.build()
   }
 
-  function addPlayer(player, position) {
+  function addPlayer (player, position) {
     let card = getCard(position)
     card.buildPlayer(player)
   }
 
-  function removeFlippableCard(card) {
-    flippableCards = flippableCards.filter((refCard) => refCard != card)
+  function removeFlippableCard (card) {
+    flippableCards = flippableCards.filter(refCard => refCard != card)
     card.getDOM().remove()
   }
 
-  function getCard(position) {
+  function getCard (position) {
     return cards[position]
   }
 
-  function getFlippableCard(position) {
+  function getCardPosition (card) {
+    let index = 0
+    for (let cardArray of cards) {
+      if (card.getId() == cardArray.getId()) break
+      ++index
+    }
+    return index
+  }
+
+  function getCardPlayer (player) {
+    let found = cards.filter(
+      card => card.getPlayer() && card.getPlayer().id === player.id
+    )
+    if (found.length > 0) return found[0]
+    return null
+  }
+
+  function getFlippableCard (position) {
     return flippableCards[position]
   }
 
-  function getFlippableCards() {
+  function getFlippableCardById (id) {
+    return flippableCards.filter(card => card.getId() === id)[0]
+  }
+
+  function getFlippableCards () {
     return flippableCards
   }
 
-  function getCards() {
+  function getCards () {
     return cards
   }
 
-  // TEST ONLY
+  /* TEST ONLY
   fillPositions()
   
   function fillPositions() {
@@ -54,48 +77,59 @@ export const memoryCard = (() => {
       let card = Card(`https://wpicsum.photos/10${i}`, cardListDOM, i)
       addCard(card)
     }
-  }
+  }*/
 
-  return {getCards, getFlippableCards, addPlayer, addFlippableCard, addCard, NUM_PLAYERS, removeFlippableCard}
+  return {
+    getCards,
+    getFlippableCards,
+    addPlayer,
+    addFlippableCard,
+    addCard,
+    NUM_PLAYERS,
+    removeFlippableCard,
+    getFlippableCardById,
+    getCardPlayer,
+    getCardPosition,
+    getCard
+  }
 })()
 
-export function addPlayer(player) {
-  if(!canAddNewPlayer()) return
-  
+export function addPlayer (player) {
+  if (!canAddNewPlayer()) return
+
   let validCards = getEmptyCards()
-  for(let card of validCards) {
-    if(addPlayerByCard(player, card))
-      return true
+  for (let card of validCards) {
+    if (addPlayerByCard(player, card)) return true
   }
   return false
 }
 
-function canAddNewPlayer() {
-  let players = memoryCard.getCards().filter((card) => card.player).length
+function canAddNewPlayer () {
+  let players = memoryCard.getCards().filter(card => card.player).length
   return players < memoryCard.NUM_PLAYERS
 }
 
-function getEmptyCards() {
+function getEmptyCards () {
   let maxPlayers = memoryCard.getCards().length
   let positionGap = Math.round(maxPlayers / memoryCard.NUM_PLAYERS)
   let positions = []
-  for(let i = 0; i < maxPlayers; i += positionGap) {
+  for (let i = 0; i < maxPlayers; i += positionGap) {
     let card = memoryCard.getCards()[i]
-    if(!card.hasPlayer()) {
+    if (!card.hasPlayer()) {
       positions.push(i)
     }
   }
   return positions
 }
 
-function addPlayerByCard(player, cardPosition) {
-  if(!isValidCardToAddPlayer(cardPosition)) return false
-  
+function addPlayerByCard (player, cardPosition) {
+  if (!isValidCardToAddPlayer(cardPosition)) return false
+
   memoryCard.addPlayer(player, cardPosition)
   return true
 }
 
-function isValidCardToAddPlayer( cardPosition) {
+function isValidCardToAddPlayer (cardPosition) {
   let card = memoryCard.getCards()[cardPosition]
   return !card || !card.player
 }

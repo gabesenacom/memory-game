@@ -1,5 +1,9 @@
-const createPlayer = (name, imageSrc) => {
-  return {name, imageSrc, finish_line: 2}
+const createPlayer = (name, imageSrc, id) => {
+  return { name, imageSrc, id, finish_line: 2 }
 }
 
-export {createPlayer}
+function getPlayerById (array, id) {
+  return array.filter(player => player.id === id)[0]
+}
+
+export { createPlayer, getPlayerById }
