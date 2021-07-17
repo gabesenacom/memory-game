@@ -45,7 +45,7 @@ const Game = (() => {
       GameState.clickedAtWrongImage()
     }
 
-    if (Game.playerTurn.finish_line === 4) {
+    if (Game.playerTurn.finish_line >= 4) {
       GameState.wonTheGame()
     }
   }
