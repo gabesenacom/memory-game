@@ -4,7 +4,7 @@ import {
   cardListDOM,
   flippableCardListDOM
 } from './memoryCard'
-import { createPlayer, getPlayerById } from './Player'
+import { getPlayerById, Player, ComputerPlayer } from './player'
 import cardImages from './cardImages'
 import { FlippableCard, Card } from './card'
 
@@ -14,25 +14,43 @@ const Game = (() => {
   let players = []
   let blockFlip = false
 
-  function addPlayerToGame (name, imageSrc) {
-    players.push(createPlayer(name, imageSrc, players.length + 1))
+  function addPlayerToGame (name, imageSrc, type) {
+    players.push(type.call(null, name, imageSrc, players.length + 1))
   }
 
-  function flip (targetCard) {
+  function flip (targetCard, targetCardIndex) {
     blockFlip = true
     targetCard.flip()
     setTimeout(() => {
       targetCard.flip()
       blockFlip = false
-    }, 1500)
+    }, 1000)
+    Game.players
+      .filter(player => player.ai)
+      .forEach(player =>
+        player.memorizeImagePosition(
+          targetCard.getRealImageSrc(),
+          targetCardIndex
+        )
+      )
   }
 
-  function flipCard (event) {
-    if (blockFlip) return
+  function flipCardEvent (event) {
+    if (Game.playerTurn.ai) return
     let cardId = Number.parseInt(event.target.getAttribute('data-id'))
     let targetCard = memoryCard.getFlippableCardById(cardId)
+    flipCard(targetCard)
+  }
+
+  function flipCard (targetCard) {
+    if (!targetCard) {
+      GameState.skipToNextPlayer()
+      return
+    }
+    if (blockFlip && !Game.playerTurn.ai) return
+    let targetCardIndex = memoryCard.getFlippableCards().indexOf(targetCard)
     if (targetCard.isFlipped()) return
-    flip(targetCard)
+    flip(targetCard, targetCardIndex)
 
     let cardPlayerTurn = memoryCard.getCardPlayer(Game.playerTurn)
     let cardPlayerTurnPosition = memoryCard.getCardPosition(cardPlayerTurn)
@@ -42,14 +60,35 @@ const Game = (() => {
     if (targetCard.getRealImageSrc() === nextCard.getImageSrc()) {
       GameState.clickedAtSameImage(cardPlayerTurn, nextCard, nextCardPosition)
     } else {
-      GameState.clickedAtWrongImage()
+      GameState.skipToNextPlayer()
     }
 
     if (Game.playerTurn.finish_line >= 4) {
-      GameState.wonTheGame()
+      return GameState.wonTheGame()
+    }
+
+    if (Game.playerTurn.ai) {
+      setTimeout(() => callAi(), 1100)
     }
   }
-  return { flipCard, players, playerTurn, logDisplay, addPlayerToGame }
+
+  function callAi () {
+    if (Game.playerTurn.ai) {
+      let cardPlayerTurn = memoryCard.getCardPlayer(Game.playerTurn)
+      let choiceCard = Game.playerTurn.selectBestChoice(cardPlayerTurn)
+      return Game.flipCard(choiceCard)
+    }
+  }
+
+  return {
+    flipCard,
+    flipCardEvent,
+    players,
+    playerTurn,
+    logDisplay,
+    addPlayerToGame,
+    callAi
+  }
 })()
 
 const GameState = (() => {
@@ -68,12 +107,11 @@ const GameState = (() => {
         nextCard = memoryCard.getCard(nextCardPosition)
       }
     }
-
     cardPlayerTurn.removePlayer()
     nextCard.buildPlayer(Game.playerTurn)
   }
 
-  function clickedAtWrongImage () {
+  function skipToNextPlayer () {
     let index = Game.players.indexOf(Game.playerTurn)
     Game.playerTurn = Game.players[getNextPlayerPosition(index)]
     Game.logDisplay.textContent = `Wrong choose. Now ${Game.playerTurn.name}'s turn`
@@ -89,7 +127,7 @@ const GameState = (() => {
       )
   }
 
-  return { clickedAtSameImage, clickedAtWrongImage, wonTheGame }
+  return { clickedAtSameImage, skipToNextPlayer, wonTheGame }
 })()
 
 function setRandomPlayerTurn () {
@@ -104,7 +142,7 @@ function sortRandomArray (array) {
   return array.sort(() => 0.5 - Math.random())
 }
 
-function getNextCardPosition (position) {
+export function getNextCardPosition (position) {
   return getNextItemInArray(memoryCard.getCards(), position)
 }
 
@@ -117,17 +155,6 @@ function getNextItemInArray (array, position) {
   return position === max ? 0 : ++position
 }
 
-function createPlayers () {
-  Game.addPlayerToGame('James', 'https://singlecolorimage.com/get/33fd8f/50x50')
-  Game.addPlayerToGame(
-    'Rubens',
-    'https://singlecolorimage.com/get/67a8b4/50x50'
-  )
-  Game.addPlayerToGame('Pr', 'https://singlecolorimage.com/get/cde4b4/50x50')
-
-  Game.players.forEach(player => addPlayer(player))
-}
-
 function createCards (flippable) {
   for (let image of getRandomizedCardImages()) {
     let list = flippable
@@ -137,7 +164,7 @@ function createCards (flippable) {
     if (flippable) {
       let card = FlippableCard(image.src, flippableCardListDOM, id)
       memoryCard.addFlippableCard(card)
-      card.getDOM().addEventListener('click', Game.flipCard)
+      card.getDOM().addEventListener('click', Game.flipCardEvent)
     } else {
       let card = Card(image.src, cardListDOM, id)
       memoryCard.addCard(card)
@@ -152,6 +179,26 @@ function showPlayerTurnIcon () {
   Game.logDisplay.appendChild(img)
 }
 
+function createPlayers () {
+  Game.addPlayerToGame(
+    'James',
+    'https://singlecolorimage.com/get/33fd8f/50x50',
+    Player
+  )
+  Game.addPlayerToGame(
+    'Rubens',
+    'https://singlecolorimage.com/get/67a8b4/50x50',
+    Player
+  )
+  Game.addPlayerToGame(
+    'Pr',
+    'https://singlecolorimage.com/get/cde4b4/50x50',
+    ComputerPlayer
+  )
+
+  Game.players.forEach(player => addPlayer(player))
+}
+
 function init () {
   createCards()
   createCards(true)
@@ -159,6 +206,7 @@ function init () {
   setRandomPlayerTurn()
   Game.logDisplay.textContent = `Game started. ${Game.playerTurn.name} starts.`
   showPlayerTurnIcon()
+  Game.callAi()
 }
 
 export default init
