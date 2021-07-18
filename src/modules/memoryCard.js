@@ -90,7 +90,8 @@ export const memoryCard = (() => {
     getFlippableCardById,
     getCardPlayer,
     getCardPosition,
-    getCard
+    getCard,
+    getFlippableCard
   }
 })()
 
