@@ -112,8 +112,8 @@ const GameState = (() => {
       }
     }
     cardPlayerTurn.removePlayer()
-    nextCard.buildPlayer(Game.playerTurn)
-    // PubSub.publish(TOPIC.BUILD_PLAYER, nextCard, Game.playerTurn);
+    // nextCard.buildPlayer(Game.playerTurn)
+    PubSub.publishSync(TOPIC.BUILD_PLAYER, {card: nextCard, player: Game.playerTurn});
   }
 
   function skipToNextPlayer () {

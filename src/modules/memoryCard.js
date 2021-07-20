@@ -26,7 +26,8 @@ export const memoryCard = (() => {
 
   function addPlayer (player, position) {
     let card = getCard(position)
-    card.buildPlayer(player)
+    PubSub.publishSync(TOPIC.BUILD_PLAYER, {card, player});
+    // card.buildPlayer(player)
   }
 
   function removeFlippableCard (card) {
