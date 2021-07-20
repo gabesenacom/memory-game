@@ -1,4 +1,7 @@
 import { Card } from './card'
+import './domController'
+import PubSub from 'pubsub-js'
+import TOPIC from './topics'
 
 export const cardListDOM = document.getElementById('card-list')
 export const flippableCardListDOM = document.getElementById(
@@ -13,12 +16,12 @@ export const memoryCard = (() => {
 
   function addCard (card) {
     cards.push(card)
-    card.build()
+    PubSub.publishSync(TOPIC.BUILD_CARD, card);
   }
 
   function addFlippableCard (card) {
     flippableCards.push(card)
-    card.build()
+    PubSub.publishSync(TOPIC.BUILD_FLIPPABLE_CARD, card);
   }
 
   function addPlayer (player, position) {
@@ -95,7 +98,7 @@ export const memoryCard = (() => {
   }
 })()
 
-export function addPlayer (player) {
+export function addPlayer (player) { // There is already a function called addPlayer, this is really confusing
   if (!canAddNewPlayer()) return
 
   let validCards = getEmptyCards()

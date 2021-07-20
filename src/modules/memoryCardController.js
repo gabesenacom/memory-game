@@ -8,7 +8,11 @@ import { getPlayerById, Player, ComputerPlayer } from './player'
 import cardImages from './cardImages'
 import { FlippableCard, Card } from './card'
 
-const Game = (() => {
+import PubSub from 'pubsub-js'
+import TOPIC from './topics'
+import './domController'
+
+export const Game = (() => {
   let logDisplay = document.getElementById('memory-card-log')
   let playerTurn = null
   let players = []
@@ -20,7 +24,7 @@ const Game = (() => {
 
   function flip (targetCard, targetCardIndex) {
     blockFlip = true
-    targetCard.flip()
+    targetCard.flip() // This is confusing. Two different functions have the same name.
     setTimeout(() => {
       targetCard.flip()
       blockFlip = false
@@ -109,6 +113,7 @@ const GameState = (() => {
     }
     cardPlayerTurn.removePlayer()
     nextCard.buildPlayer(Game.playerTurn)
+    // PubSub.publish(TOPIC.BUILD_PLAYER, nextCard, Game.playerTurn);
   }
 
   function skipToNextPlayer () {
@@ -164,7 +169,6 @@ function createCards (flippable) {
     if (flippable) {
       let card = FlippableCard(image.src, flippableCardListDOM, id)
       memoryCard.addFlippableCard(card)
-      card.getDOM().addEventListener('click', Game.flipCardEvent)
     } else {
       let card = Card(image.src, cardListDOM, id)
       memoryCard.addCard(card)
