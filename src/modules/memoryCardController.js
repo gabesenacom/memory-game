@@ -1,6 +1,6 @@
 import {
   memoryCard,
-  addPlayer,
+  placePlayer,
   cardListDOM,
   flippableCardListDOM
 } from './memoryCard'
@@ -8,7 +8,11 @@ import { getPlayerById, Player, ComputerPlayer } from './player'
 import cardImages from './cardImages'
 import { FlippableCard, Card } from './card'
 
-const Game = (() => {
+import PubSub from 'pubsub-js'
+import TOPIC from './topics'
+import './domController'
+
+export const Game = (() => {
   let logDisplay = document.getElementById('memory-card-log')
   let playerTurn = null
   let players = []
@@ -20,15 +24,15 @@ const Game = (() => {
 
   function flip (targetCard, targetCardIndex) {
     blockFlip = true
-    targetCard.flip()
+    targetCard.flipImage()
     setTimeout(() => {
-      targetCard.flip()
+      targetCard.flipImage()
       blockFlip = false
     }, 1000)
     Game.players
       .filter(player => player.ai)
       .forEach(player =>
-        player.memorizeImagePosition(
+        player.memorize(
           targetCard.getRealImageSrc(),
           targetCardIndex
         )
@@ -108,7 +112,8 @@ const GameState = (() => {
       }
     }
     cardPlayerTurn.removePlayer()
-    nextCard.buildPlayer(Game.playerTurn)
+    // nextCard.buildPlayer(Game.playerTurn)
+    PubSub.publishSync(TOPIC.BUILD_PLAYER, {card: nextCard, player: Game.playerTurn});
   }
 
   function skipToNextPlayer () {
@@ -164,7 +169,6 @@ function createCards (flippable) {
     if (flippable) {
       let card = FlippableCard(image.src, flippableCardListDOM, id)
       memoryCard.addFlippableCard(card)
-      card.getDOM().addEventListener('click', Game.flipCardEvent)
     } else {
       let card = Card(image.src, cardListDOM, id)
       memoryCard.addCard(card)
@@ -196,7 +200,7 @@ function createPlayers () {
     ComputerPlayer
   )
 
-  Game.players.forEach(player => addPlayer(player))
+  Game.players.forEach(player => placePlayer(player))
 }
 
 function init () {
