@@ -21,13 +21,8 @@ const Card = (imageSrc, parentNode, id) => {
     cardDOM.style.backgroundImage = `url('${imageSrc}')`
   }
 
-  function buildPlayer (playerObject) {
-    player = {
-      name: playerObject.name,
-      dom: createElement('img', 'player-image', cardDOM),
-      id: playerObject.id
-    }
-    player.dom.src = playerObject.imageSrc
+  function buildPlayer (_player) {
+    player = _player
   }
 
   function hasPlayer () {
