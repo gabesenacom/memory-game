@@ -98,7 +98,7 @@ export const memoryCard = (() => {
   }
 })()
 
-export function addPlayer (player) { // There is already a function called addPlayer, this is really confusing
+export function placePlayer (player) { // There is already a function called addPlayer, this is really confusing
   if (!canAddNewPlayer()) return
 
   let validCards = getEmptyCards()

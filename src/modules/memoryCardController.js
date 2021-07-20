@@ -1,6 +1,6 @@
 import {
   memoryCard,
-  addPlayer,
+  placePlayer,
   cardListDOM,
   flippableCardListDOM
 } from './memoryCard'
@@ -24,15 +24,15 @@ export const Game = (() => {
 
   function flip (targetCard, targetCardIndex) {
     blockFlip = true
-    targetCard.flip() // This is confusing. Two different functions have the same name.
+    targetCard.flipImage()
     setTimeout(() => {
-      targetCard.flip()
+      targetCard.flipImage()
       blockFlip = false
     }, 1000)
     Game.players
       .filter(player => player.ai)
       .forEach(player =>
-        player.memorizeImagePosition(
+        player.memorize(
           targetCard.getRealImageSrc(),
           targetCardIndex
         )
@@ -200,7 +200,7 @@ function createPlayers () {
     ComputerPlayer
   )
 
-  Game.players.forEach(player => addPlayer(player))
+  Game.players.forEach(player => placePlayer(player))
 }
 
 function init () {

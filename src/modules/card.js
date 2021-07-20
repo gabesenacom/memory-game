@@ -91,7 +91,7 @@ const FlippableCard = (
   )
   let flipped = false
 
-  function flip () {
+  function flipImage () {
     flipped = !flipped
     setImage(flipped ? originalImageSrc : defaultBlankImage)
   }
@@ -104,7 +104,7 @@ const FlippableCard = (
     return originalImageSrc
   }
 
-  return { build, setImage, flip, getDOM, setDOM, getId, getImageSrc, getRealImageSrc, getParentNode, isFlipped }
+  return { build, setImage, flipImage, getDOM, setDOM, getId, getImageSrc, getRealImageSrc, getParentNode, isFlipped }
 }
 
 export { Card, FlippableCard }

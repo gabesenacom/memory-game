@@ -13,7 +13,7 @@ const ComputerPlayer = (name, imageSrc, id) => {
   const prototype = Player(name, imageSrc, id, true)
   let images = []
 
-  function memorizeImagePosition (cardImage, position) {
+  function memorize (cardImage, position) {
     let memory = { cardImage, position }
     let alwaysExists =
       images.filter(
@@ -55,7 +55,7 @@ const ComputerPlayer = (name, imageSrc, id) => {
     }
   }
 
-  return Object.assign(prototype, { memorizeImagePosition, selectBestChoice })
+  return Object.assign(prototype, { memorize, selectBestChoice })
 }
 
 export { Player, ComputerPlayer, getPlayerById }
