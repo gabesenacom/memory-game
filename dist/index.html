@@ -7,8 +7,37 @@
     <title>Memory Game</title>
 </head>
 <body>
-  <h1>Memory Game</h1>
-  <main>
+  <div id="rules" class="hidden">
+    <div class="modal">
+      <h2>How to Play</h2>
+      <p>This is where we explain the rules of the game.</p>
+      <button class=toggle-rules>Close</button>
+    </div>
+  </div>
+  
+  <div id="startup">
+    <h1>Memory Game</h1>
+    <button class="toggle-rules">How to Play</button>
+
+    <div id="player-list">
+      <h2>Players:</h2>
+    </div>
+
+    <form action="" id="player-form">
+      <label for="playerName">
+        Player name: <input type="text" id="playerName" name="playerName" required>
+      </label>
+      <label for="playerType">
+        Bot <input type="checkbox" name="playerType" id="playerType" value="computer">
+      </label>
+      <button type="submit">Add Player</button>
+    </form>
+    
+    <button id="start-game">Start Game</button>
+    <div id="errors"></div>
+  </div>
+
+  <main class="hidden">
     <h2>Static cards</h2>
     <ul id="card-list">
     </ul>
