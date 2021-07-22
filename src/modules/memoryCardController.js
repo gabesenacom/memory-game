@@ -183,30 +183,35 @@ function showPlayerTurnIcon () {
   Game.logDisplay.appendChild(img)
 }
 
-function createPlayers () {
-  Game.addPlayerToGame(
-    'James',
-    'https://singlecolorimage.com/get/33fd8f/50x50',
-    Player
-  )
-  Game.addPlayerToGame(
-    'Rubens',
-    'https://singlecolorimage.com/get/67a8b4/50x50',
-    Player
-  )
-  Game.addPlayerToGame(
-    'Pr',
-    'https://singlecolorimage.com/get/cde4b4/50x50',
-    ComputerPlayer
-  )
+function createPlayers (playerList) {
+  // Game.addPlayerToGame(
+  //   'James',
+  //   'https://singlecolorimage.com/get/33fd8f/50x50',
+  //   Player
+  // )
+  // Game.addPlayerToGame(
+  //   'Rubens',
+  //   'https://singlecolorimage.com/get/67a8b4/50x50',
+  //   Player
+  // )
+  // Game.addPlayerToGame(
+  //   'Pr',
+  //   'https://singlecolorimage.com/get/cde4b4/50x50',
+  //   ComputerPlayer
+  // )
+
+  playerList.forEach((player) => {
+    let type = player.type ? ComputerPlayer : Player;
+    Game.addPlayerToGame(player.name, player.icon, type);
+  });
 
   Game.players.forEach(player => placePlayer(player))
 }
 
-function init () {
+function init (playerList) {
   createCards()
   createCards(true)
-  createPlayers()
+  createPlayers(playerList)
   setRandomPlayerTurn()
   Game.logDisplay.textContent = `Game started. ${Game.playerTurn.name} starts.`
   showPlayerTurnIcon()
