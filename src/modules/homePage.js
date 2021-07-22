@@ -4,7 +4,7 @@ import './domController';
 
 const playerForm = document.getElementById('player-form');
 const startButton = document.getElementById('start-game');
-const toggleRulesButtons = document.querySelectorAll('.toggle-rules');
+const showRulesButton = document.querySelector('.show-rules');
 const currentIcon = document.getElementById('current-icon');
 const selectedIcon = document.getElementById('playerIcon');
 const iconChoices = document.querySelectorAll('.icon-choice');
@@ -23,11 +23,9 @@ export function homePageInit () {
   startButton.addEventListener('click', () => {
     PubSub.publish(TOPIC.START_GAME, playerList);
   })
-  
-  toggleRulesButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      PubSub.publish(TOPIC.SHOW_RULES);
-    })
+
+  showRulesButton.addEventListener('click', () => {
+    PubSub.publish(TOPIC.SHOW_RULES);
   })
 
   currentIcon.addEventListener('click', () => {

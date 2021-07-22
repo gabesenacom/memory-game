@@ -1,3 +1,17 @@
+button {
+  font-size: 1.5rem;
+  background-color: rgb(126, 213, 216);
+
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 10px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: darken(rgb(126, 213, 216), 20%);
+  }
+}
+
 #startup {
   display: flex;
   flex-direction: column;
@@ -14,16 +28,6 @@
     padding: 10px 30px;
     margin-top: 5px;
     margin-bottom: 5px;
-    font-size: 1.5rem;
-    background-color: rgb(126, 213, 216);
-
-    border: 1px solid white;
-    border-radius: 5px;
-
-    &:hover {
-      cursor: pointer;
-      background-color: darken(rgb(126, 213, 216), 20%);
-    }
   }
 
   h2 {

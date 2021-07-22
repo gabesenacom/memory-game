@@ -58,48 +58,47 @@ PubSub.subscribe(TOPIC.BUILD_PLAYER, buildPlayer);
 const gameRules = document.getElementById('rules');
 const rulesModal = document.querySelector('.modal');
 const playerDisplay = document.getElementById('player-list');
-const playerForm = document.getElementById('player-form');
 const startupForm = document.getElementById('startup');
 const errors = document.getElementById('errors');
 const gameDisplay = document.getElementsByTagName('main')[0];
 
 function submitPlayerForm (topic, data) {
   let { event, playerList } = data;
-  let playerName = event.target.elements.playerName.value;
-  let playerType = event.target.elements.playerType.checked;
-  let playerIcon = event.target.elements.playerIcon.value;
 
-  playerList.push({
-      name: playerName,
-      type: playerType,
-      icon: playerIcon
-  });
+  let newPlayer = {
+    name: event.target.elements.playerName.value,
+    type: event.target.elements.playerType.checked,
+    icon: event.target.elements.playerIcon.value
+  }
+  playerList.push(newPlayer);
 
-  createPlayerDOM(playerName, playerIcon, playerType);
+  createPlayerDOM(newPlayer, playerList);
   clearFields(event);
 }
 
-function createPlayerDOM (playerName, playerIcon, playerType) {
-  let newPlayer = createElement('div', 'player-entry', playerDisplay);
-  // This can be done better. It wasn't adding the elements with createElement for some reason
+function createPlayerDOM (newPlayer, playerList) {
+  let newPlayerDOM = createElement('div', 'player-entry', playerDisplay);
+  // This can be done better/cleaner. It wasn't adding the elements with createElement for some reason
   let newPlayerName = createElement('p', null);
   let newPlayerIcon = createElement('img', null);
   let newPlayerType = createElement('p', null);
   let removePlayerButton = createElement('button', null);
 
-  newPlayerName.textContent = playerName;
-  newPlayerIcon.src = playerIcon;
-  newPlayerType.textContent = playerType ? '(Bot)' : '';
+  newPlayerName.textContent = newPlayer.name;
+  newPlayerIcon.src = newPlayer.icon;
+  newPlayerType.textContent = newPlayer.type ? '(Bot)' : '';
   removePlayerButton.textContent = 'X';
 
   removePlayerButton.addEventListener('click', () => {
-    newPlayer.remove();
+    let index = playerList.indexOf(newPlayer);
+    playerList.splice(index, 1);
+    newPlayerDOM.remove();
   })
 
-  newPlayer.appendChild(newPlayerIcon);
-  newPlayer.appendChild(newPlayerName);
-  newPlayer.appendChild(newPlayerType);
-  newPlayer.appendChild(removePlayerButton);
+  newPlayerDOM.appendChild(newPlayerIcon);
+  newPlayerDOM.appendChild(newPlayerName);
+  newPlayerDOM.appendChild(newPlayerType);
+  newPlayerDOM.appendChild(removePlayerButton);
 }
 
 const iconDisplay = document.getElementById('icon-choices');
@@ -127,7 +126,7 @@ function startGame (topic, playerList) {
 }
 
 function showRules (topic) {
-  gameRules.classList.toggle('hidden');
+  gameRules.classList.remove('hidden');
   document.body.addEventListener('click', (event) => {
     clickOutsideElement(event, [rulesModal], gameRules);
   })
