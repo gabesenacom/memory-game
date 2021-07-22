@@ -1,6 +1,11 @@
 import PubSub from 'pubsub-js';
 import TOPIC from './topics';
-import { createElement } from './utils';
+import { 
+  createElement,
+  clearFields,
+  removeChildren,
+  clickOutsideElement
+} from './utils';
 import { Game } from './memoryCardController';
 import init from './memoryCardController';
 
@@ -51,6 +56,7 @@ PubSub.subscribe(TOPIC.BUILD_PLAYER, buildPlayer);
 // Startup Form + Rules
 
 const gameRules = document.getElementById('rules');
+const rulesModal = document.querySelector('.modal');
 const playerDisplay = document.getElementById('player-list');
 const playerForm = document.getElementById('player-form');
 const startupForm = document.getElementById('startup');
@@ -60,26 +66,42 @@ const gameDisplay = document.getElementsByTagName('main')[0];
 function submitPlayerForm (topic, data) {
   let { event, playerList } = data;
   let playerName = event.target.elements.playerName.value;
-  let playerType = event.target.elements.playerType.checked ? 'Computer': 'Human';
+  let playerType = event.target.elements.playerType.checked;
+  let playerIcon = event.target.elements.playerIcon.value;
 
   playerList.push({
       name: playerName,
-      type: event.target.elements.playerType.checked
-    });
+      type: playerType,
+      icon: playerIcon
+  });
 
-  let newPlayer = createElement('p', 'player-name', playerDisplay);
-  newPlayer.textContent = `Name: ${playerName} -- Type: ${playerType}`;
+  let newPlayer = createElement('div', 'player-entry', playerDisplay);
+  // This can be done better. It wasn't adding the elements with createElement
+  let newPlayerName = createElement('p', null);
+  let newPlayerIcon = createElement('img', null);
+  let newPlayerType = createElement('p', null);
+
+  newPlayerName.textContent = playerName;
+  newPlayerIcon.src = playerIcon;
+  newPlayerType.textContent = playerType ? '(Bot)' : '';
+
+  newPlayer.appendChild(newPlayerIcon);
+  newPlayer.appendChild(newPlayerName);
+  newPlayer.appendChild(newPlayerType);
 
   clearFields(event);
 }
 
-function clearFields (event) {
-  event.target.elements.playerName.value = '';
-  event.target.elements.playerType.checked = false;
-}
+const iconDisplay = document.getElementById('icon-choices');
+const currentIcon = document.getElementById('current-icon');
+const selectedIcon = document.getElementById('playerIcon');
+const iconChoices = document.querySelectorAll('.icon-choice');
 
-function removeChildren (element) {
-  while (element.firstChild) { element.lastChild.remove() };
+function showIconChoices (topic) {
+  iconDisplay.classList.toggle('hidden');
+  document.body.addEventListener('click', (event) => {
+    clickOutsideElement(event, [iconDisplay, currentIcon], iconDisplay);
+  })
 }
 
 function startGame (topic, playerList) {
@@ -98,8 +120,12 @@ function startGame (topic, playerList) {
 
 function showRules (topic) {
   gameRules.classList.toggle('hidden');
+  document.body.addEventListener('click', (event) => {
+    clickOutsideElement(event, [rulesModal], gameRules);
+  })
 }
 
 PubSub.subscribe(TOPIC.SUBMIT_PLAYER_FORM, submitPlayerForm);
 PubSub.subscribe(TOPIC.START_GAME, startGame);
 PubSub.subscribe(TOPIC.SHOW_RULES, showRules);
+PubSub.subscribe(TOPIC.SHOW_ICON_CHOICES, showIconChoices);

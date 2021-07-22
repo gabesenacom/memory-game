@@ -29,3 +29,18 @@ toggleRulesButtons.forEach((button) => {
     PubSub.publish(TOPIC.SHOW_RULES);
   })
 })
+
+const currentIcon = document.getElementById('current-icon');
+const selectedIcon = document.getElementById('playerIcon');
+const iconChoices = document.querySelectorAll('.icon-choice');
+
+currentIcon.addEventListener('click', () => {
+  PubSub.publish(TOPIC.SHOW_ICON_CHOICES);
+})
+
+iconChoices.forEach((choice) => {
+  choice.addEventListener('click', () => {
+    currentIcon.src = choice.src;
+    selectedIcon.value = choice.src;
+  })
+})

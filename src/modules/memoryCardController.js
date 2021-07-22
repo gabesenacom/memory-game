@@ -202,7 +202,7 @@ function createPlayers (playerList) {
 
   playerList.forEach((player) => {
     let type = player.type ? ComputerPlayer : Player;
-    Game.addPlayerToGame(player.name, 'https://singlecolorimage.com/get/33fd8f/50x50', type)
+    Game.addPlayerToGame(player.name, player.icon, type);
   });
 
   Game.players.forEach(player => placePlayer(player))
