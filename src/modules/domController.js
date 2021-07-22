@@ -75,27 +75,35 @@ function submitPlayerForm (topic, data) {
       icon: playerIcon
   });
 
+  createPlayerDOM(playerName, playerIcon, playerType);
+  clearFields(event);
+}
+
+function createPlayerDOM (playerName, playerIcon, playerType) {
   let newPlayer = createElement('div', 'player-entry', playerDisplay);
-  // This can be done better. It wasn't adding the elements with createElement
+  // This can be done better. It wasn't adding the elements with createElement for some reason
   let newPlayerName = createElement('p', null);
   let newPlayerIcon = createElement('img', null);
   let newPlayerType = createElement('p', null);
+  let removePlayerButton = createElement('button', null);
 
   newPlayerName.textContent = playerName;
   newPlayerIcon.src = playerIcon;
   newPlayerType.textContent = playerType ? '(Bot)' : '';
+  removePlayerButton.textContent = 'X';
+
+  removePlayerButton.addEventListener('click', () => {
+    newPlayer.remove();
+  })
 
   newPlayer.appendChild(newPlayerIcon);
   newPlayer.appendChild(newPlayerName);
   newPlayer.appendChild(newPlayerType);
-
-  clearFields(event);
+  newPlayer.appendChild(removePlayerButton);
 }
 
 const iconDisplay = document.getElementById('icon-choices');
 const currentIcon = document.getElementById('current-icon');
-const selectedIcon = document.getElementById('playerIcon');
-const iconChoices = document.querySelectorAll('.icon-choice');
 
 function showIconChoices (topic) {
   iconDisplay.classList.toggle('hidden');
