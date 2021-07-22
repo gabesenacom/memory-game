@@ -1,11 +1,21 @@
 @use 'reset';
+@use 'startup';
 
 * {
   box-sizing: border-box;
 }
 
+html {
+  position: relative;
+}
+
 h1 {
   font-size: 3rem;
+  text-align: center;
+}
+
+h2 {
+  font-size: 2rem;
   text-align: center;
 }
 
@@ -45,4 +55,8 @@ h1 {
   max-height: 50px;
   max-width: 50px;
   background-color: red;
+}
+
+.hidden {
+  display: none!important;
 }
