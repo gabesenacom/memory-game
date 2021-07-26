@@ -1,6 +1,4 @@
 import { createElement } from './utils'
-import PubSub from 'pubsub-js'
-import TOPIC from './topics'
 import './domController'
 
 const DEFAULT_BLANK_IMAGE = 'images/blank.png'
@@ -47,7 +45,7 @@ const Card = (imageSrc, parentNode, id) => {
   }
 
   function setDOM (element) {
-    cardDOM = element;
+    cardDOM = element
   }
 
   function getImageSrc () {
@@ -79,11 +77,15 @@ const FlippableCard = (
   id,
   defaultBlankImage = DEFAULT_BLANK_IMAGE
 ) => {
-  let { build, setImage, getDOM, setDOM, getId, getImageSrc, getParentNode } = Card(
-    defaultBlankImage,
-    parentNode,
-    id
-  )
+  let {
+    build,
+    setImage,
+    getDOM,
+    setDOM,
+    getId,
+    getImageSrc,
+    getParentNode
+  } = Card(defaultBlankImage, parentNode, id)
   let flipped = false
 
   function flipImage () {
@@ -99,7 +101,18 @@ const FlippableCard = (
     return originalImageSrc
   }
 
-  return { build, setImage, flipImage, getDOM, setDOM, getId, getImageSrc, getRealImageSrc, getParentNode, isFlipped }
+  return {
+    build,
+    setImage,
+    flipImage,
+    getDOM,
+    setDOM,
+    getId,
+    getImageSrc,
+    getRealImageSrc,
+    getParentNode,
+    isFlipped
+  }
 }
 
 export { Card, FlippableCard }
