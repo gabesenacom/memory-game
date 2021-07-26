@@ -9,25 +9,26 @@ export const flippableCardListDOM = document.getElementById(
 )
 
 export const memoryCard = (() => {
-  const NUM_PLAYERS = 4
-
+  let playersLength = 0
   const cards = []
   let flippableCards = []
 
+  function setPlayersLength (_playersLength) {
+    playersLength = _playersLength
+  }
+
+  function getPlayersLength () {
+    return playersLength
+  }
+
   function addCard (card) {
     cards.push(card)
-    PubSub.publishSync(TOPIC.BUILD_CARD, card);
+    PubSub.publishSync(TOPIC.BUILD_CARD, card)
   }
 
   function addFlippableCard (card) {
     flippableCards.push(card)
-    PubSub.publishSync(TOPIC.BUILD_FLIPPABLE_CARD, card);
-  }
-
-  function addPlayer (player, position) {
-    let card = getCard(position)
-    PubSub.publishSync(TOPIC.BUILD_PLAYER, {card, player});
-    // card.buildPlayer(player)
+    PubSub.publishSync(TOPIC.BUILD_FLIPPABLE_CARD, card)
   }
 
   function removeFlippableCard (card) {
@@ -72,24 +73,13 @@ export const memoryCard = (() => {
     return cards
   }
 
-  /* TEST ONLY
-  fillPositions()
-  
-  function fillPositions() {
-    
-    for(let i = 0; i < 10; i++) {
-      let card = Card(`https://wpicsum.photos/10${i}`, cardListDOM, i)
-      addCard(card)
-    }
-  }*/
-
   return {
     getCards,
     getFlippableCards,
-    addPlayer,
     addFlippableCard,
     addCard,
-    NUM_PLAYERS,
+    getPlayersLength,
+    setPlayersLength,
     removeFlippableCard,
     getFlippableCardById,
     getCardPlayer,
@@ -98,43 +88,3 @@ export const memoryCard = (() => {
     getFlippableCard
   }
 })()
-
-export function placePlayer (player) { // There is already a function called addPlayer, this is really confusing
-  if (!canAddNewPlayer()) return
-
-  let validCards = getEmptyCards()
-  for (let card of validCards) {
-    if (addPlayerByCard(player, card)) return true
-  }
-  return false
-}
-
-function canAddNewPlayer () {
-  let players = memoryCard.getCards().filter(card => card.player).length
-  return players < memoryCard.NUM_PLAYERS
-}
-
-function getEmptyCards () {
-  let maxPlayers = memoryCard.getCards().length
-  let positionGap = Math.round(maxPlayers / memoryCard.NUM_PLAYERS)
-  let positions = []
-  for (let i = 0; i < maxPlayers; i += positionGap) {
-    let card = memoryCard.getCards()[i]
-    if (!card.hasPlayer()) {
-      positions.push(i)
-    }
-  }
-  return positions
-}
-
-function addPlayerByCard (player, cardPosition) {
-  if (!isValidCardToAddPlayer(cardPosition)) return false
-
-  memoryCard.addPlayer(player, cardPosition)
-  return true
-}
-
-function isValidCardToAddPlayer (cardPosition) {
-  let card = memoryCard.getCards()[cardPosition]
-  return !card || !card.player
-}

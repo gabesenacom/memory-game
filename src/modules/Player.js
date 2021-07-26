@@ -6,21 +6,22 @@ function getPlayerById (array, id) {
 }
 
 const Player = (name, imageSrc, id, ai = false) => {
-  return { name, imageSrc, id, finish_line: 2, ai }
+  return { name, imageSrc, id, finish_line: 1, ai }
 }
 
 const ComputerPlayer = (name, imageSrc, id) => {
   const prototype = Player(name, imageSrc, id, true)
   let images = []
 
-  function memorize (cardImage, position) {
-    let memory = { cardImage, position }
-    let alwaysExists =
-      images.filter(
+  function _hasImage(cardImage, position) {
+    return images.filter(
         image => image.cardImage == cardImage && image.position == position
       ).length > 0
-    if (alwaysExists) return
-    images.push(memory)
+  }
+  
+  function memorize (cardImage, position) {
+    let memory = { cardImage, position }
+    if (!_hasImage(cardImage, position)) images.push(memory)
   }
 
   function _getSameImage (anotherImage) {
