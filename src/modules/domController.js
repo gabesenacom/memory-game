@@ -41,10 +41,11 @@ function buildPlayer (topic, data) {
   let player = {
     name: data.player.name,
     imageSrc: data.player.imageSrc,
-    dom: createElement('img', 'player-image', data.card.getDOM()),
+    dom: createElement('img', 'player-image highlighted', data.card.getDOM()),
     id: data.player.id
   }
   player.dom.src = data.player.imageSrc
+  player.dom.setAttribute('data-id', player.id)
   data.card.buildPlayer(player)
 }
 
@@ -136,7 +137,53 @@ PubSub.subscribe(TOPIC.SHOW_ICON_CHOICES, showIconChoices)
 
 // Player display
 
+const cardList = document.getElementById('card-list')
 const playerDisplay = document.getElementById('player-display');
+
+function _createPlayerDisplayDOM (player) {
+  let playerCard = createElement('div', 'player-card', playerDisplay)
+  let playerName = createElement('p', null)
+  let playerIcon = createElement('img', null)
+  let playerType = createElement('p', null)
+  let playerLives = createElement('div', 'player-lives')
+  
+  playerName.textContent = player.name
+  playerIcon.src = player.imageSrc
+  playerType.textContent = player.ai ? '(Bot)' : ''
+  playerLives.textContent = player.finish_line
+  
+  playerCard.setAttribute('data-id', player.id)
+  playerCard.appendChild(playerIcon)
+  playerCard.appendChild(playerName)
+  playerCard.appendChild(playerType)
+  playerCard.appendChild(playerLives)
+}
+
+function _removePlayerHighlights(playerList) {
+  playerList.forEach(player => {
+    let targetPlayer = _getTargetPlayer(player.id)
+    let targetPlayerImage = _getTargetPlayerImage(player.id)
+    targetPlayer.classList.remove('highlighted')
+    targetPlayerImage.classList.remove('highlighted')
+  })
+}
+
+function _getTargetPlayer (id) {
+  return playerDisplay.querySelector(`.player-card[data-id='${id}']`)
+}
+
+function _getTargetPlayerImage (id) {
+  return cardList.querySelector(`.player-image[data-id='${id}']`)
+}
+
+function highlightPlayerTurn (topic, data) {
+  let { playerTurn, playerList } = data;
+  _removePlayerHighlights(playerList);
+  let targetPlayer = _getTargetPlayer(playerTurn.id)
+  let targetPlayerImage = _getTargetPlayerImage(playerTurn.id)
+  targetPlayer.classList.add('highlighted')
+  targetPlayerImage.classList.add('highlighted')
+}
 
 function createPlayerDisplay (topic, playerList) {
   playerList.forEach(player => {
@@ -144,35 +191,12 @@ function createPlayerDisplay (topic, playerList) {
   })
 }
 
-function _createPlayerDisplayDOM (player) {
-  let playerCard = createElement('div', 'player-card', playerDisplay)
-  let playerName = createElement('p', null)
-  let playerIcon = createElement('img', null)
-  let playerType = createElement('p', null)
-
-  playerName.textContent = player.name
-  playerIcon.src = player.imageSrc
-  playerType.textContent = player.ai ? '(Bot)' : ''
-
-  playerCard.setAttribute('data-id', player.id)
-  playerCard.appendChild(playerIcon)
-  playerCard.appendChild(playerName)
-  playerCard.appendChild(playerType)
+function updateFinishLine (topic, player) {
+  let targetPlayer = _getTargetPlayer(player.id)
+  let playerLives = targetPlayer.querySelector('.player-lives')
+  playerLives.textContent = player.finish_line
 }
 
-function highlightPlayerTurn (topic, data) {
-  let { playerTurn, playerList } = data;
-  _removePlayerHighlights(playerList);
-  let targetPlayer = playerDisplay.querySelector(`.player-card[data-id='${playerTurn.id}']`)
-  targetPlayer.classList.add('highlighted')
-}
-
-function _removePlayerHighlights(playerList) {
-  playerList.forEach(player => {
-    let targetPlayer = playerDisplay.querySelector(`.player-card[data-id='${player.id}']`)
-    targetPlayer.classList.remove('highlighted')
-  })
-}
-
-PubSub.subscribe(TOPIC.CREATE_PLAYER_DISPLAY, createPlayerDisplay);
-PubSub.subscribe(TOPIC.HIGHLIGHT_PLAYER_TURN, highlightPlayerTurn);
+PubSub.subscribe(TOPIC.CREATE_PLAYER_DISPLAY, createPlayerDisplay)
+PubSub.subscribe(TOPIC.HIGHLIGHT_PLAYER_TURN, highlightPlayerTurn)
+PubSub.subscribe(TOPIC.UPDATE_FINISH_LINE, updateFinishLine)
