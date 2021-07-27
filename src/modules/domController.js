@@ -41,6 +41,7 @@ function buildFlippableCard (topic, card) {
 function buildPlayer (topic, data) {
   let player = {
     name: data.player.name,
+    imageSrc: data.player.imageSrc,
     dom: createElement('img', 'player-image', data.card.getDOM()),
     id: data.player.id
   }
