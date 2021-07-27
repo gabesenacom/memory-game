@@ -11,6 +11,7 @@ const iconChoices = document.querySelectorAll('.icon-choice')
 const playerList = []
 
 export function homePageInit () {
+  playerForm.reset()
   playerForm.addEventListener('submit', event => {
     event.preventDefault()
     if (playerList.length >= 4) {

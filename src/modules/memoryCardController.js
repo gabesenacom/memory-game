@@ -1,6 +1,7 @@
 import PubSub from 'pubsub-js'
 import TOPIC from './topics'
-import { memoryCard, cardListDOM, flippableCardListDOM } from './memoryCard'
+import { memoryCard } from './memoryCard'
+import {StaticCardList, FlippableCardList} from "./CardList"
 import cardImages from './cardImages'
 import { FlippableCard, Card } from './card'
 import './domController'
@@ -10,12 +11,11 @@ import { addPlayerToGame } from './PlayerController'
 import { ComputerPlayer, Player } from './Player'
 
 function setRandomPlayerTurn () {
-  1
   Game.setPlayerTurn(sortRandomArray(Game.players)[0])
 }
 
 function getRandomizedCardImages () {
-  return sortRandomArray(cardImages)
+ return sortRandomArray(cardImages)
 }
 
 function getNextCardPosition (position) {
@@ -33,10 +33,10 @@ function createCards (flippable) {
       : memoryCard.getCards()
     let id = list.length + 1
     if (flippable) {
-      let card = FlippableCard(image.src, flippableCardListDOM, id)
+      let card = FlippableCard(image.src, FlippableCardList.dom, id)
       memoryCard.addFlippableCard(card)
     } else {
-      let card = Card(image.src, cardListDOM, id)
+      let card = Card(image.src, StaticCardList.dom, id)
       memoryCard.addCard(card)
     }
   }

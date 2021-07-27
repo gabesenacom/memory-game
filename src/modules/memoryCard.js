@@ -3,11 +3,6 @@ import './domController'
 import PubSub from 'pubsub-js'
 import TOPIC from './topics'
 
-export const cardListDOM = document.getElementById('card-list')
-export const flippableCardListDOM = document.getElementById(
-  'flippable-card-list'
-)
-
 export const memoryCard = (() => {
   let playersLength = 0
   const cards = []
@@ -49,6 +44,10 @@ export const memoryCard = (() => {
     return index
   }
 
+  function getCardById(id) {
+    return cards.filter(card => card.getId() === id)[0]
+  }
+
   function getCardPlayer (player) {
     let found = cards.filter(
       card => card.getPlayer() && card.getPlayer().id === player.id
@@ -81,6 +80,7 @@ export const memoryCard = (() => {
     getPlayersLength,
     setPlayersLength,
     removeFlippableCard,
+    getCardById,
     getFlippableCardById,
     getCardPlayer,
     getCardPosition,

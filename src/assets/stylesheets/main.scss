@@ -21,6 +21,9 @@ h2 {
 
 #card-list {
   display: flex;
+  max-width: 100% !important;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 #flippable-card-list {
@@ -60,3 +63,11 @@ h2 {
 .hidden {
   display: none!important;
 }
+
+
+/* TEST ONLY */
+.test-img {
+  position: fixed;
+  top: 0;
+}
+/* ending test only*/
