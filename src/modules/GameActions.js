@@ -7,7 +7,8 @@ import {
   getNextPlayerPosition
 } from './memoryCardController'
 import { memoryCard } from './memoryCard'
-
+import {StaticCardList} from "./CardList"
+import {createElement} from "./utils" // TEST
 export const GameActions = (() => {
   function clickedAtSameImage (cardPlayerTurn, nextCard, nextCardPosition) {
     while (nextCard.hasPlayer()) {
@@ -30,13 +31,14 @@ export const GameActions = (() => {
         nextCard = memoryCard.getCard(nextCardPosition)
       }
     }
+    StaticCardList.scrollTo(nextCard.getDOM())
     cardPlayerTurn.removePlayer()
     PubSub.publishSync(TOPIC.BUILD_PLAYER, {
       card: nextCard,
       player: Game.getPlayerTurn()
     })
   }
-
+  let testDOM = createElement("img", "test-img", document.querySelector("main"))
   function skipToNextPlayer () {
     let index = Game.players.indexOf(Game.getPlayerTurn())
     Game.setPlayerTurn(Game.players[getNextPlayerPosition(index)])
@@ -44,6 +46,9 @@ export const GameActions = (() => {
       type: 3,
       text: `Wrong choose. Now ${Game.getPlayerTurn().name}'s turn`
     })
+    let cardPlayer = memoryCard.getCardPlayer(Game.getPlayerTurn())
+    testDOM.src = cardPlayer.getPlayer().imageSrc
+    StaticCardList.scrollTo(cardPlayer.getDOM())
     //showPlayerTurnIcon() send ping TOPIC.NEW_PLAYER_TURN
   }
 
