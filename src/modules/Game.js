@@ -78,6 +78,9 @@ export const Game = (() => {
 
   function setPlayerTurn (_playerTurn) {
     playerTurn = _playerTurn
+    PubSub.publish(TOPIC.HIGHLIGHT_PLAYER_TURN, {
+      playerTurn: playerTurn, playerList: players
+    })
   }
 
   function getPlayerTurn () {

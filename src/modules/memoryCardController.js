@@ -55,6 +55,7 @@ function init (playerList) {
   createCards()
   createCards(true)
   createPlayers(playerList)
+  PubSub.publish(TOPIC.CREATE_PLAYER_DISPLAY, Game.players)
   setRandomPlayerTurn()
   PubSub.publish(TOPIC.SEND_LOG, {
     type: 0,

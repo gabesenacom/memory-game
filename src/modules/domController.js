@@ -70,13 +70,12 @@ function submitPlayerForm (topic, data) {
     icon: event.target.elements.playerIcon.value
   }
   playerList.push(newPlayer)
-  createPlayerListDOM(newPlayer, playerList)
+  _createPlayerListDOM(newPlayer, playerList)
   event.target.reset()
 }
 
-function createPlayerListDOM (newPlayer, playerList) {
+function _createPlayerListDOM (newPlayer, playerList) {
   let newPlayerDOM = createElement('div', 'player-entry', playerListDisplay)
-  // This can be done better/cleaner. It wasn't adding the elements with createElement for some reason
   let newPlayerName = createElement('p', null)
   let newPlayerIcon = createElement('img', null)
   let newPlayerType = createElement('p', null)
@@ -118,7 +117,6 @@ function startGame (topic, playerList) {
     return
   }
 
-  createPlayerDisplay(playerList);
   gameDisplay.classList.remove('hidden')
   startupForm.classList.add('hidden')
   init(playerList)
@@ -140,26 +138,41 @@ PubSub.subscribe(TOPIC.SHOW_ICON_CHOICES, showIconChoices)
 
 const playerDisplay = document.getElementById('player-display');
 
-function createPlayerDisplay (playerList) {
+function createPlayerDisplay (topic, playerList) {
   playerList.forEach(player => {
-    createPlayerDisplayDOM(player, playerList)
+    _createPlayerDisplayDOM(player)
   })
 }
 
-function createPlayerDisplayDOM (newPlayer, playerList) {
-  let newPlayerDOM = createElement('div', 'player-card', playerDisplay)
-  // This can be done better/cleaner. It wasn't adding the elements with createElement for some reason
-  let newPlayerName = createElement('p', null)
-  let newPlayerIcon = createElement('img', null)
-  let newPlayerType = createElement('p', null)
+function _createPlayerDisplayDOM (player) {
+  let playerCard = createElement('div', 'player-card', playerDisplay)
+  let playerName = createElement('p', null)
+  let playerIcon = createElement('img', null)
+  let playerType = createElement('p', null)
 
-  newPlayerName.textContent = newPlayer.name
-  newPlayerIcon.src = newPlayer.icon
-  newPlayerType.textContent = newPlayer.type ? '(Bot)' : ''
+  playerName.textContent = player.name
+  playerIcon.src = player.imageSrc
+  playerType.textContent = player.ai ? '(Bot)' : ''
 
-  newPlayerDOM.appendChild(newPlayerIcon)
-  newPlayerDOM.appendChild(newPlayerName)
-  newPlayerDOM.appendChild(newPlayerType)
+  playerCard.setAttribute('data-id', player.id)
+  playerCard.appendChild(playerIcon)
+  playerCard.appendChild(playerName)
+  playerCard.appendChild(playerType)
 }
 
-// PubSub.subscribe(TOPIC.CREATE_PLAYER_DISPLAY, createPlayerDisplay);
+function highlightPlayerTurn (topic, data) {
+  let { playerTurn, playerList } = data;
+  _removePlayerHighlights(playerList);
+  let targetPlayer = playerDisplay.querySelector(`.player-card[data-id='${playerTurn.id}']`)
+  targetPlayer.classList.add('highlighted')
+}
+
+function _removePlayerHighlights(playerList) {
+  playerList.forEach(player => {
+    let targetPlayer = playerDisplay.querySelector(`.player-card[data-id='${player.id}']`)
+    targetPlayer.classList.remove('highlighted')
+  })
+}
+
+PubSub.subscribe(TOPIC.CREATE_PLAYER_DISPLAY, createPlayerDisplay);
+PubSub.subscribe(TOPIC.HIGHLIGHT_PLAYER_TURN, highlightPlayerTurn);
