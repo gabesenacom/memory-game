@@ -19,14 +19,17 @@ const StaticCardList = (() => {
     return index === dom.children.length
   }
 
-  function scrollTo(cardDOM) {
+  function moveToEndIfReach(cardDOM) {
     if(_isReachedEnd(cardDOM)) moveFirstChildToEnd(dom)
+  }
+
+  function scrollTo(cardDOM) {
 
     let {right} = cardDOM.getBoundingClientRect()
     dom.scrollTo(right, 0)
   }
 
-  return {dom, scrollTo};
+  return {dom, scrollTo, moveToEndIfReach};
 })()
 
 const FlippableCardList = (() => {
