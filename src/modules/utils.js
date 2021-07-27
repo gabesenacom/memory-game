@@ -1,6 +1,6 @@
 export const createElement = (tag, className, parentNode = null) => {
   let element = document.createElement(tag)
-  element.className = className
+  if(className) element.className = className
   if (parentNode) parentNode.appendChild(element)
   return element
 }
@@ -25,3 +25,9 @@ export function getNextItemPositionInArray (array, position) {
   let max = array.length - 1
   return position === max ? 0 : ++position
 }
+
+export function moveFirstChildToEnd(parentNode) {
+    let first = parentNode.children[0]
+    parentNode.removeChild(first)
+    parentNode.appendChild(first)
+  }
