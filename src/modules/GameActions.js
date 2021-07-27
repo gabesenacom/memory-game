@@ -21,11 +21,9 @@ export const GameActions = (() => {
       if (opponent.finish_line > 0) {
         opponent.finish_line -= 1
         PubSub.publish(TOPIC.UPDATE_FINISH_LINE, opponent)
-        // send ping TOPIC.LOST_ONE_FINISH_LINE
       }
 
       Game.getPlayerTurn().finish_line += 1
-      // send ping TOPIC.PICK_ONE_FINISH_LINE
       PubSub.publish(TOPIC.UPDATE_FINISH_LINE, Game.getPlayerTurn())
       if (nextCard.hasPlayer() && opponent.id == Game.getPlayerTurn().id) break
       if (nextCard.hasPlayer()) {

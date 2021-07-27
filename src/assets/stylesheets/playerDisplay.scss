@@ -27,3 +27,19 @@
 .highlighted {
   border: 2px solid magenta!important;
 }
+
+.player-lives {
+  display: flex;
+  align-items: center;
+}
+
+.life {
+  width: 25px;
+  height: 25px;
+  border: 1px solid black;
+  border-radius: 50%;
+
+  &.filled {
+    background-color: red;
+  }
+}

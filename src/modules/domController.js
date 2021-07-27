@@ -146,17 +146,31 @@ function _createPlayerDisplayDOM (player) {
   let playerIcon = createElement('img', null)
   let playerType = createElement('p', null)
   let playerLives = createElement('div', 'player-lives')
-  
+  _createPlayerLivesDOM(playerLives)
+
   playerName.textContent = player.name
   playerIcon.src = player.imageSrc
   playerType.textContent = player.ai ? '(Bot)' : ''
-  playerLives.textContent = player.finish_line
   
   playerCard.setAttribute('data-id', player.id)
   playerCard.appendChild(playerIcon)
   playerCard.appendChild(playerName)
   playerCard.appendChild(playerType)
   playerCard.appendChild(playerLives)
+}
+
+function _createPlayerLivesDOM (playerLives) {
+  let lifeOne = createElement('div', 'life', playerLives)
+  let lifeTwo = createElement('div', 'life', playerLives)
+  let lifeThree = createElement('div', 'life', playerLives)
+  let lifeFour = createElement('div', 'life', playerLives)
+
+  lifeOne.setAttribute('data-id', 1)
+  lifeTwo.setAttribute('data-id', 2)
+  lifeThree.setAttribute('data-id', 3)
+  lifeFour.setAttribute('data-id', 4)
+
+  lifeOne.classList.add('filled')
 }
 
 function _removePlayerHighlights(playerList) {
@@ -194,7 +208,21 @@ function createPlayerDisplay (topic, playerList) {
 function updateFinishLine (topic, player) {
   let targetPlayer = _getTargetPlayer(player.id)
   let playerLives = targetPlayer.querySelector('.player-lives')
-  playerLives.textContent = player.finish_line
+  _clearLives(playerLives)
+  _addLives(playerLives, player.finish_line)
+}
+
+function _clearLives (playerLives) {
+  let livesToClear = playerLives.querySelectorAll('div')
+  livesToClear.forEach(life => life.classList.remove('filled'))
+}
+
+function _addLives (playerLives, finish_line) {
+  if (finish_line === 0) return
+  for(let i = 1; i < finish_line+1; i++) {
+    let lifeToFill = playerLives.querySelector(`div[data-id='${i}']`)
+    lifeToFill.classList.add('filled')
+  }
 }
 
 PubSub.subscribe(TOPIC.CREATE_PLAYER_DISPLAY, createPlayerDisplay)
