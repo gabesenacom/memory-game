@@ -142,6 +142,9 @@ const playerDisplay = document.getElementById('player-display');
 
 function _createPlayerDisplayDOM (player) {
   let playerCard = createElement('div', 'player-card', playerDisplay)
+  playerCard.setAttribute('data-id', player.id)
+
+  let playerInfo = createElement('div', 'player-info', playerCard)
   let playerName = createElement('p', null)
   let playerIcon = createElement('img', null)
   let playerType = createElement('p', null)
@@ -152,10 +155,11 @@ function _createPlayerDisplayDOM (player) {
   playerIcon.src = player.imageSrc
   playerType.textContent = player.ai ? '(Bot)' : ''
   
-  playerCard.setAttribute('data-id', player.id)
-  playerCard.appendChild(playerIcon)
-  playerCard.appendChild(playerName)
-  playerCard.appendChild(playerType)
+  playerInfo.appendChild(playerIcon)
+  playerInfo.appendChild(playerName)
+  playerInfo.appendChild(playerType)
+
+  playerCard.appendChild(playerInfo)
   playerCard.appendChild(playerLives)
 }
 
