@@ -2,7 +2,6 @@ import PubSub from 'pubsub-js'
 import TOPIC from './topics'
 import {
   createElement,
-  clearFields,
   removeChildren,
   clickOutsideElement
 } from './utils'
@@ -57,7 +56,7 @@ PubSub.subscribe(TOPIC.BUILD_PLAYER, buildPlayer)
 
 const gameRules = document.getElementById('rules')
 const rulesModal = document.querySelector('.modal')
-const playerDisplay = document.getElementById('player-list')
+const playerListDisplay = document.getElementById('player-list')
 const startupForm = document.getElementById('startup')
 const errors = document.getElementById('errors')
 const gameDisplay = document.getElementsByTagName('main')[0]
@@ -71,12 +70,12 @@ function submitPlayerForm (topic, data) {
     icon: event.target.elements.playerIcon.value
   }
   playerList.push(newPlayer)
-  createPlayerDOM(newPlayer, playerList)
+  createPlayerListDOM(newPlayer, playerList)
   event.target.reset()
 }
 
-function createPlayerDOM (newPlayer, playerList) {
-  let newPlayerDOM = createElement('div', 'player-entry', playerDisplay)
+function createPlayerListDOM (newPlayer, playerList) {
+  let newPlayerDOM = createElement('div', 'player-entry', playerListDisplay)
   // This can be done better/cleaner. It wasn't adding the elements with createElement for some reason
   let newPlayerName = createElement('p', null)
   let newPlayerIcon = createElement('img', null)
@@ -119,6 +118,7 @@ function startGame (topic, playerList) {
     return
   }
 
+  createPlayerDisplay(playerList);
   gameDisplay.classList.remove('hidden')
   startupForm.classList.add('hidden')
   init(playerList)
@@ -135,3 +135,31 @@ PubSub.subscribe(TOPIC.SUBMIT_PLAYER_FORM, submitPlayerForm)
 PubSub.subscribe(TOPIC.START_GAME, startGame)
 PubSub.subscribe(TOPIC.SHOW_RULES, showRules)
 PubSub.subscribe(TOPIC.SHOW_ICON_CHOICES, showIconChoices)
+
+// Player display
+
+const playerDisplay = document.getElementById('player-display');
+
+function createPlayerDisplay (playerList) {
+  playerList.forEach(player => {
+    createPlayerDisplayDOM(player, playerList)
+  })
+}
+
+function createPlayerDisplayDOM (newPlayer, playerList) {
+  let newPlayerDOM = createElement('div', 'player-card', playerDisplay)
+  // This can be done better/cleaner. It wasn't adding the elements with createElement for some reason
+  let newPlayerName = createElement('p', null)
+  let newPlayerIcon = createElement('img', null)
+  let newPlayerType = createElement('p', null)
+
+  newPlayerName.textContent = newPlayer.name
+  newPlayerIcon.src = newPlayer.icon
+  newPlayerType.textContent = newPlayer.type ? '(Bot)' : ''
+
+  newPlayerDOM.appendChild(newPlayerIcon)
+  newPlayerDOM.appendChild(newPlayerName)
+  newPlayerDOM.appendChild(newPlayerType)
+}
+
+// PubSub.subscribe(TOPIC.CREATE_PLAYER_DISPLAY, createPlayerDisplay);
