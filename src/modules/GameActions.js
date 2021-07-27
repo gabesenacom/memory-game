@@ -8,7 +8,7 @@ import {
 } from './memoryCardController'
 import { memoryCard } from './memoryCard'
 import {StaticCardList} from "./CardList"
-import {createElement} from "./utils" // TEST
+
 export const GameActions = (() => {
   function clickedAtSameImage (cardPlayerTurn, nextCard, nextCardPosition) {
     while (nextCard.hasPlayer()) {
@@ -41,9 +41,7 @@ export const GameActions = (() => {
       player: Game.getPlayerTurn()
     })
   }
-  // TEST ONLY
-  let testDOM = createElement("img", "test-img", document.querySelector("main"))
-  // ending test only
+
   function skipToNextPlayer () {
     let index = Game.players.indexOf(Game.getPlayerTurn())
     Game.setPlayerTurn(Game.players[getNextPlayerPosition(index)])
@@ -52,10 +50,7 @@ export const GameActions = (() => {
       text: `Wrong choose. Now ${Game.getPlayerTurn().name}'s turn`
     })
 
-    // TEST ONLY
     let cardPlayer = memoryCard.getCardPlayer(Game.getPlayerTurn())
-    testDOM.src = cardPlayer.getPlayer().imageSrc
-    // ending test only
     
     StaticCardList.scrollTo(cardPlayer.getDOM())
     StaticCardList.moveToEndIfReach(cardPlayer.getDOM())
