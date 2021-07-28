@@ -8,7 +8,7 @@ import {
 } from './memoryCardController'
 import { memoryCard } from './memoryCard'
 import {StaticCardList} from "./CardList"
-import {createElement} from "./utils" // TEST
+
 export const GameActions = (() => {
   function clickedAtSameImage (cardPlayerTurn, nextCard, nextCardPosition) {
     while (nextCard.hasPlayer()) {
@@ -20,11 +20,11 @@ export const GameActions = (() => {
       opponent = getPlayerById(Game.players, opponent.id)
       if (opponent.finish_line > 0) {
         opponent.finish_line -= 1
-        // send ping TOPIC.LOST_ONE_FINISH_LINE
+        PubSub.publish(TOPIC.UPDATE_FINISH_LINE, opponent)
       }
 
       Game.getPlayerTurn().finish_line += 1
-      // send ping TOPIC.PICK_ONE_FINISH_LINE
+      PubSub.publish(TOPIC.UPDATE_FINISH_LINE, Game.getPlayerTurn())
       if (nextCard.hasPlayer() && opponent.id == Game.getPlayerTurn().id) break
       if (nextCard.hasPlayer()) {
         nextCardPosition = getNextCardPosition(nextCardPosition)
@@ -41,9 +41,7 @@ export const GameActions = (() => {
       player: Game.getPlayerTurn()
     })
   }
-  // TEST ONLY
-  let testDOM = createElement("img", "test-img", document.querySelector("main"))
-  // ending test only
+
   function skipToNextPlayer () {
     let index = Game.players.indexOf(Game.getPlayerTurn())
     Game.setPlayerTurn(Game.players[getNextPlayerPosition(index)])
@@ -52,10 +50,7 @@ export const GameActions = (() => {
       text: `Wrong choose. Now ${Game.getPlayerTurn().name}'s turn`
     })
 
-    // TEST ONLY
     let cardPlayer = memoryCard.getCardPlayer(Game.getPlayerTurn())
-    testDOM.src = cardPlayer.getPlayer().imageSrc
-    // ending test only
     
     StaticCardList.scrollTo(cardPlayer.getDOM())
     StaticCardList.moveToEndIfReach(cardPlayer.getDOM())
