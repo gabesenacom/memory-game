@@ -1,5 +1,6 @@
 import PubSub from 'pubsub-js'
 import TOPIC from './topics'
+import "./GameLog"
 import {
   createElement,
   removeChildren,

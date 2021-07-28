@@ -15,7 +15,10 @@ export function homePageInit () {
   playerForm.addEventListener('submit', event => {
     event.preventDefault()
     if (playerList.length >= 4) {
-      // SEND LOG MAX PLAYERS REACH
+      PubSub.publish(TOPIC.SEND_LOG, {
+        type: 4,
+        message: 'Sorry, the max players is 4.'
+      })
       return
     }
 

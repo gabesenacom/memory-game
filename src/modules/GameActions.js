@@ -11,11 +11,11 @@ import {StaticCardList} from "./CardList"
 
 export const GameActions = (() => {
   function clickedAtSameImage (cardPlayerTurn, nextCard, nextCardPosition) {
-    while (nextCard.hasPlayer()) {
-      PubSub.publish(TOPIC.SEND_LOG, {
-        type: 0,
-        text: `${Game.getPlayerTurn().name} found the correct image`
+          PubSub.publish(TOPIC.SEND_LOG, {
+        type: 2,
+        message: `The player ${Game.getPlayerTurn().name} found the correct image!`
       })
+    while (nextCard.hasPlayer()) {
       let opponent = nextCard.getPlayer()
       opponent = getPlayerById(Game.players, opponent.id)
       if (opponent.finish_line > 0) {
@@ -45,16 +45,16 @@ export const GameActions = (() => {
   function skipToNextPlayer () {
     let index = Game.players.indexOf(Game.getPlayerTurn())
     Game.setPlayerTurn(Game.players[getNextPlayerPosition(index)])
+    console.log("player turn now", Game.getPlayerTurn().name)
     PubSub.publish(TOPIC.SEND_LOG, {
       type: 3,
-      text: `Wrong choose. Now ${Game.getPlayerTurn().name}'s turn`
+      message: `Wrong choose. Now ${Game.getPlayerTurn().name}'s turn.`
     })
 
     let cardPlayer = memoryCard.getCardPlayer(Game.getPlayerTurn())
     
     StaticCardList.scrollTo(cardPlayer.getDOM())
     StaticCardList.moveToEndIfReach(cardPlayer.getDOM())
-    //showPlayerTurnIcon() send ping TOPIC.NEW_PLAYER_TURN
   }
 
   function wonTheGame (winner) {
@@ -63,7 +63,11 @@ export const GameActions = (() => {
       .forEach(card =>
         card.getDOM().removeEventListener('click', Game.flipCardEvent)
       )
-    // send ping TOPIC.WON_THE_GAME
+    PubSub.publish(TOPIC.WON_THE_GAME, {winner})
+    PubSub.publish(TOPIC.SEND_LOG, {
+      type: 2,
+      message: `The player ${winner.name}'s wins the game!`
+    })
   }
 
   return { clickedAtSameImage, skipToNextPlayer, wonTheGame }

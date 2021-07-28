@@ -53,11 +53,6 @@ export const Game = (() => {
 
     let winner = getWinner()
     if (winner != null) {
-      console.log('ok has winner', winner)
-      PubSub.publish(TOPIC.SEND_LOG, {
-        type: 1,
-        text: `${winner.name} won the game!`
-      })
       return GameActions.wonTheGame(winner)
     }
 
