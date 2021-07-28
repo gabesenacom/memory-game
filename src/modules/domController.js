@@ -63,14 +63,36 @@ const startupForm = document.getElementById('startup')
 const errors = document.getElementById('errors')
 const gameDisplay = document.getElementsByTagName('main')[0]
 
+function _isSameIcon(playerList, icon) {
+  return playerList.some((player) => player.icon === icon)
+}
+
 function submitPlayerForm (topic, data) {
   let { event, playerList } = data
+
+  if (playerList.length >= 4) {
+      PubSub.publish(TOPIC.SEND_LOG, {
+        type: 4,
+        message: 'Sorry, the max players is 4.'
+      })
+      return
+    }
 
   let newPlayer = {
     name: event.target.elements.playerName.value,
     type: event.target.elements.playerType.checked,
     icon: event.target.elements.playerIcon.value
   }
+  
+
+  if(_isSameIcon(playerList, newPlayer.icon)) {
+    PubSub.publish(TOPIC.SEND_LOG, {
+        type: 4,
+        message: 'Sorry, you should to select another icon. This icon already selected.'
+      })
+    return
+  }
+
   playerList.push(newPlayer)
   _createPlayerListDOM(newPlayer, playerList)
   event.target.reset()
@@ -114,8 +136,10 @@ function startGame (topic, playerList) {
   removeChildren(errors)
 
   if (playerList.length < 2) {
-    let errorMessage = createElement('p', 'error', errors)
-    errorMessage.textContent = 'You must have at least 2 players to play!'
+    PubSub.publish(TOPIC.SEND_LOG, {
+        type: 4,
+        message: 'You must have at least 2 players to play!'
+      })
     return
   }
 
