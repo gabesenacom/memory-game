@@ -1,7 +1,8 @@
-@use 'reset';
-@use 'startup';
-@use 'playerDisplay';
-@use 'log';
+@use '_reset';
+@use '_startup';
+@use '_rules';
+@use '_players';
+@use '_log';
 
 * {
   box-sizing: border-box;
@@ -58,15 +59,6 @@ h2 {
   flex-direction: column;
 }
 
-
 .hidden {
   display: none!important;
 }
-
-
-/* TEST ONLY */
-.test-img {
-  position: fixed;
-  top: 0;
-}
-/* ending test only*/

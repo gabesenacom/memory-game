@@ -7,6 +7,8 @@
     <title>Memory Game</title>
 </head>
 <body>
+
+  <!-- Rules -->
   <div id="rules" class="hidden">
     <div class="modal">
       <h2>How to Play</h2>
@@ -45,14 +47,18 @@
     </div>
   </div>
   
+  <!-- Home Page -->
   <div id="startup">
     <h1>Memory Game</h1>
     <button class="show-rules">How to Play</button>
 
     <div id="player-list">
-      <div>
-        <h2>Players:</h2>
-        <button id="add-player">Add Player</button>
+      <div id="form-container">
+        <div>
+          <h2>Players:</h2>
+          <button id="add-player">Add Player</button>
+        </div>
+
         <form action="" id="player-form" class="hidden">
           <div id="icon-select">
             <div id="icon-choices" class="hidden">
@@ -79,11 +85,11 @@
       <div id="players"></div>
     </div>
 
-    
     <button id="start-game">Start Game</button>
     <div id="errors"></div>
   </div>
 
+  <!-- Main Game -->
   <main class="hidden">
     <div id="player-display"></div>
     <h2>Static cards</h2>
