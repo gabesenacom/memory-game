@@ -134,6 +134,28 @@ button {
 
   display: flex;
   justify-content: center;
+
+  section {
+    display: flex;
+  }
+}
+
+figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  img {
+    width: 400px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  figcaption {
+    margin-bottom: 10px;
+    max-width: 400px;
+    text-align: center;
+  }
 }
 
 .modal {
@@ -141,7 +163,7 @@ button {
   width: 80%;
   margin-top: 25px;
   margin-bottom: 25px;
-  padding: 10px;
+  padding: 40px 80px;
 
   border: 1px solid white;
   border-radius: 5px;
@@ -150,7 +172,23 @@ button {
   flex-direction: column;
   align-items: center;
 
-  h2, p {
-    margin-bottom: 10px;
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: 1.25rem;
+  }
+
+  div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    line-height: 1.2;
+
+    &:first-child {
+      justify-content: space-around;
+    }
   }
 }
