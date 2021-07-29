@@ -2,6 +2,8 @@ import PubSub from 'pubsub-js'
 import TOPIC from './topics'
 import './domController'
 
+const addPlayerButton = document.getElementById('add-player')
+const cancelPlayerButton = document.getElementById('cancel-player')
 const playerForm = document.getElementById('player-form')
 const startButton = document.getElementById('start-game')
 const showRulesButton = document.querySelector('.show-rules')
@@ -11,13 +13,30 @@ const iconChoices = document.querySelectorAll('.icon-choice')
 const playerList = []
 
 export function homePageInit () {
+  addPlayerButton.addEventListener('click', () => {
+    PubSub.publish(TOPIC.SHOW_PLAYER_FORM, {
+      playerList: playerList,
+      form: playerForm,
+      addButton: addPlayerButton,
+      cancelButton: cancelPlayerButton
+    })
+  })
+
+  cancelPlayerButton.addEventListener('click', (event) => {
+    event.preventDefault()
+    PubSub.publish(TOPIC.HIDE_PLAYER_FORM, {
+      form: playerForm,
+      addButton: addPlayerButton
+    })
+  })
+
   playerForm.reset()
   playerForm.addEventListener('submit', event => {
     event.preventDefault()
-
     let data = {
       event: event,
-      playerList: playerList
+      playerList: playerList,
+      addButton: addPlayerButton
     }
     PubSub.publish(TOPIC.SUBMIT_PLAYER_FORM, data)
   })

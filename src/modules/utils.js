@@ -27,7 +27,12 @@ export function getNextItemPositionInArray (array, position) {
 }
 
 export function moveFirstChildToEnd(parentNode) {
-    let first = parentNode.children[0]
-    parentNode.removeChild(first)
-    parentNode.appendChild(first)
-  }
+  let first = parentNode.children[0]
+  parentNode.removeChild(first)
+  parentNode.appendChild(first)
+}
+
+export function resetForm(form, icon) {
+  form.reset()
+  icon.src = form.elements.playerIcon.value
+}

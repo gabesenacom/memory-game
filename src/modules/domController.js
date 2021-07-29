@@ -4,7 +4,8 @@ import "./GameLog"
 import {
   createElement,
   removeChildren,
-  clickOutsideElement
+  clickOutsideElement,
+  resetForm
 } from './utils'
 import { Game } from './Game'
 import { init } from './memoryCardController'
@@ -65,7 +66,7 @@ PubSub.subscribe(TOPIC.BUILD_PLAYER, buildPlayer)
 
 const gameRules = document.getElementById('rules')
 const rulesModal = document.querySelector('.modal')
-const playerListDisplay = document.getElementById('player-list')
+const playerListDisplay = document.getElementById('players')
 const startupForm = document.getElementById('startup')
 const errors = document.getElementById('errors')
 const gameDisplay = document.getElementsByTagName('main')[0]
@@ -74,16 +75,37 @@ function _isSameIcon(playerList, icon) {
   return playerList.some((player) => player.icon === icon)
 }
 
-function submitPlayerForm (topic, data) {
-  let { event, playerList } = data
+function showPlayerForm(topic, data) {
+  let { playerList, form, addButton, cancelButton } = data
 
   if (playerList.length >= 4) {
-      PubSub.publish(TOPIC.SEND_LOG, {
-        type: 4,
-        message: 'Sorry, the max players is 4.'
-      })
-      return
-    }
+    console.log('Can\'t add more players')
+    return
+  }
+
+  form.classList.remove('hidden')
+  addButton.classList.add('hidden')
+  cancelButton.classList.remove('hidden')
+}
+
+function hidePlayerForm(topic, data) {
+  let { form, addButton } = data
+
+  resetForm(form, currentIcon)
+  form.classList.add('hidden')
+  addButton.classList.remove('hidden')
+}
+
+function submitPlayerForm (topic, data) {
+  let { event, playerList, addButton } = data
+
+  if (playerList.length >= 4) {
+    PubSub.publish(TOPIC.SEND_LOG, {
+      type: 4,
+      message: 'Sorry, the max players is 4.'
+    })
+    return
+  }
 
   let newPlayer = {
     name: event.target.elements.playerName.value,
@@ -102,7 +124,9 @@ function submitPlayerForm (topic, data) {
 
   playerList.push(newPlayer)
   _createPlayerListDOM(newPlayer, playerList)
-  event.target.reset()
+  resetForm(event.target, currentIcon)
+  event.target.classList.add('hidden')
+  if (playerList.length < 4) addButton.classList.remove('hidden')
 }
 
 function _createPlayerListDOM (newPlayer, playerList) {
@@ -162,6 +186,8 @@ function showRules (topic) {
   })
 }
 
+PubSub.subscribe(TOPIC.SHOW_PLAYER_FORM, showPlayerForm)
+PubSub.subscribe(TOPIC.HIDE_PLAYER_FORM, hidePlayerForm)
 PubSub.subscribe(TOPIC.SUBMIT_PLAYER_FORM, submitPlayerForm)
 PubSub.subscribe(TOPIC.START_GAME, startGame)
 PubSub.subscribe(TOPIC.SHOW_RULES, showRules)
