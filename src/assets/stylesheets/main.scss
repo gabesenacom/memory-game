@@ -1,6 +1,7 @@
 @use 'reset';
 @use 'startup';
 @use 'playerDisplay';
+@use 'log';
 
 * {
   box-sizing: border-box;
@@ -25,6 +26,7 @@ h2 {
   max-width: 100% !important;
   overflow-x: hidden;
   scroll-behavior: smooth;
+  align-items: flex-end;
 }
 
 #flippable-card-list {
@@ -38,28 +40,24 @@ h2 {
 }
 
 #flippable-card-list .card {
-  background-color: initial !important;
-}
-
-.card {
   min-height: 100px;
   min-width: 100px;
   max-height: 100px;
   max-width: 100px;
-  background-color: blue;
+  background-color: initial !important;
+}
+
+.card {
   margin: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.player-image {
-  height: 50px;
-  width: 50px;
-  max-height: 50px;
-  max-width: 50px;
-  background-color: red;
+#card-list .card {
+  flex-direction: column;
 }
+
 
 .hidden {
   display: none!important;

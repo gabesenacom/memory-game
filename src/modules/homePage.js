@@ -14,10 +14,6 @@ export function homePageInit () {
   playerForm.reset()
   playerForm.addEventListener('submit', event => {
     event.preventDefault()
-    if (playerList.length >= 4) {
-      // SEND LOG MAX PLAYERS REACH
-      return
-    }
 
     let data = {
       event: event,

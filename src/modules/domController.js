@@ -1,5 +1,6 @@
 import PubSub from 'pubsub-js'
 import TOPIC from './topics'
+import "./GameLog"
 import {
   createElement,
   removeChildren,
@@ -9,48 +10,55 @@ import { Game } from './Game'
 import { init } from './memoryCardController'
 
 // Card DOM
-
+/* expect data structure
+  {
+    card: card object
+  }
+*/
 function buildCard (topic, card) {
-  let className = 'card'
-  let parentNode = card.getParentNode()
-  let id = card.getId()
+  let className = card.getClassName()
   let imageSrc = card.getImageSrc()
-  let cardDOM = createElement('div', className, parentNode)
-
+  let cardDOM = createElement('div', className, card.getParentNode())
   card.setDOM(cardDOM)
-  cardDOM.setAttribute('data-id', id)
-  card.setImage(imageSrc)
+  cardDOM.setAttribute('data-id', card.getId())
+  buildCardImage(cardDOM, className, imageSrc)
+  if(isFlippableCard(className)) {
+    cardDOM.addEventListener('click', Game.flipCardEvent)
+  }
 }
 
-function buildFlippableCard (topic, card) {
-  let className = 'card'
-  let parentNode = card.getParentNode()
-  let id = card.getId()
-  let imageSrc = card.getImageSrc()
-  let cardDOM = createElement('div', className, parentNode)
+function isFlippableCard(className) {
+  return className.includes('flippable card')
+}
 
-  card.setDOM(cardDOM)
-  cardDOM.setAttribute('data-id', id)
-  card.setImage(imageSrc)
-  cardDOM.addEventListener('click', Game.flipCardEvent)
+function buildCardImage(cardDOM, className, image) {
+  if(isFlippableCard(className)) {
+    cardDOM.style.backgroundImage = `url('${image}')`
+    return
+  }
+
+  let imageDOM = createElement('img', 'card-image', cardDOM)
+  imageDOM.src = image
 }
 
 // Player DOM
 
 function buildPlayer (topic, data) {
+  let card = data.card
   let player = {
     name: data.player.name,
     imageSrc: data.player.imageSrc,
-    dom: createElement('img', 'player-image highlighted', data.card.getDOM()),
+    dom: createElement('img', 'player-image highlighted', null),
     id: data.player.id
   }
   player.dom.src = data.player.imageSrc
   player.dom.setAttribute('data-id', player.id)
-  data.card.buildPlayer(player)
+  let firstChild = card.getDOM().children[0]
+  card.getDOM().insertBefore(player.dom, firstChild)
+  card.buildPlayer(player)
 }
 
 PubSub.subscribe(TOPIC.BUILD_CARD, buildCard)
-PubSub.subscribe(TOPIC.BUILD_FLIPPABLE_CARD, buildFlippableCard)
 PubSub.subscribe(TOPIC.BUILD_PLAYER, buildPlayer)
 
 // Startup Form + Rules
@@ -62,14 +70,36 @@ const startupForm = document.getElementById('startup')
 const errors = document.getElementById('errors')
 const gameDisplay = document.getElementsByTagName('main')[0]
 
+function _isSameIcon(playerList, icon) {
+  return playerList.some((player) => player.icon === icon)
+}
+
 function submitPlayerForm (topic, data) {
   let { event, playerList } = data
+
+  if (playerList.length >= 4) {
+      PubSub.publish(TOPIC.SEND_LOG, {
+        type: 4,
+        message: 'Sorry, the max players is 4.'
+      })
+      return
+    }
 
   let newPlayer = {
     name: event.target.elements.playerName.value,
     type: event.target.elements.playerType.checked,
     icon: event.target.elements.playerIcon.value
   }
+  
+
+  if(_isSameIcon(playerList, newPlayer.icon)) {
+    PubSub.publish(TOPIC.SEND_LOG, {
+        type: 4,
+        message: 'Sorry, you should to select another icon. This icon already selected.'
+      })
+    return
+  }
+
   playerList.push(newPlayer)
   _createPlayerListDOM(newPlayer, playerList)
   event.target.reset()
@@ -113,8 +143,10 @@ function startGame (topic, playerList) {
   removeChildren(errors)
 
   if (playerList.length < 2) {
-    let errorMessage = createElement('p', 'error', errors)
-    errorMessage.textContent = 'You must have at least 2 players to play!'
+    PubSub.publish(TOPIC.SEND_LOG, {
+        type: 4,
+        message: 'You must have at least 2 players to play!'
+      })
     return
   }
 

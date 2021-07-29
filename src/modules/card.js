@@ -3,21 +3,11 @@ import './domController'
 
 const DEFAULT_BLANK_IMAGE = 'images/blank.png'
 
-const Card = (imageSrc, parentNode, id) => {
+const Card = (imageSrc, parentNode, id, className = 'card') => {
   let image
   let player
   let cardDOM
-
-  function build (className = 'card') {
-    cardDOM = createElement('div', className, parentNode)
-    cardDOM.setAttribute('data-id', id)
-    setImage(imageSrc)
-    return cardDOM
-  }
-
-  function setImage (imageSrc) {
-    cardDOM.style.backgroundImage = `url('${imageSrc}')`
-  }
+  let imageDOM;
 
   function buildPlayer (_player) {
     player = _player
@@ -56,11 +46,14 @@ const Card = (imageSrc, parentNode, id) => {
     return parentNode
   }
 
+  function getClassName() {
+    return className
+  }
+
   return {
-    build,
-    setImage,
     buildPlayer,
     removePlayer,
+    getClassName,
     hasPlayer,
     getPlayer,
     getDOM,
@@ -78,19 +71,22 @@ const FlippableCard = (
   defaultBlankImage = DEFAULT_BLANK_IMAGE
 ) => {
   let {
-    build,
-    setImage,
     getDOM,
     setDOM,
     getId,
     getImageSrc,
-    getParentNode
-  } = Card(defaultBlankImage, parentNode, id)
+    getParentNode,
+    getClassName
+  } = Card(defaultBlankImage, parentNode, id, 'flippable card')
   let flipped = false
+
+  function _setImage (imageSrc) {
+    getDOM().style.backgroundImage = `url('${imageSrc}')`
+  }
 
   function flipImage () {
     flipped = !flipped
-    setImage(flipped ? originalImageSrc : defaultBlankImage)
+    _setImage(flipped ? originalImageSrc : defaultBlankImage)
   }
 
   function isFlipped () {
@@ -102,8 +98,6 @@ const FlippableCard = (
   }
 
   return {
-    build,
-    setImage,
     flipImage,
     getDOM,
     setDOM,
@@ -111,6 +105,7 @@ const FlippableCard = (
     getImageSrc,
     getRealImageSrc,
     getParentNode,
+    getClassName,
     isFlipped
   }
 }

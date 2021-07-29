@@ -23,7 +23,7 @@ export const memoryCard = (() => {
 
   function addFlippableCard (card) {
     flippableCards.push(card)
-    PubSub.publishSync(TOPIC.BUILD_FLIPPABLE_CARD, card)
+    PubSub.publishSync(TOPIC.BUILD_CARD, card)
   }
 
   function removeFlippableCard (card) {

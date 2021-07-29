@@ -58,8 +58,8 @@ function init (playerList) {
   PubSub.publish(TOPIC.CREATE_PLAYER_DISPLAY, Game.players)
   setRandomPlayerTurn()
   PubSub.publish(TOPIC.SEND_LOG, {
-    type: 0,
-    text: `Game started. ${Game.getPlayerTurn().name} starts.`
+    type: 1,
+    message: `Game started! The player ${Game.getPlayerTurn().name} starts.`
   })
   Game.callAi()
 }
