@@ -1,16 +1,23 @@
 import { memoryCard } from './memoryCard'
 import { getNextCardPosition } from './memoryCardController'
+import { imageList } from './imageList'
 
 function getPlayerById (array, id) {
   return array.filter(player => player.id === id)[0]
 }
 
-const Player = (name, imageSrc, id, ai = false) => {
-  return { name, imageSrc, id, finish_line: 1, ai }
+function lookupCharacterSrc (iconSrc) {
+  let test = imageList.find(obj => obj.icon === iconSrc)
+  return imageList.find(obj => obj.icon === iconSrc).character
 }
 
-const ComputerPlayer = (name, imageSrc, id) => {
-  const prototype = Player(name, imageSrc, id, true)
+const Player = (name, iconSrc, id, ai = false) => {
+  let characterSrc = lookupCharacterSrc(iconSrc)
+  return { name, iconSrc, characterSrc, id, finish_line: 1, ai }
+}
+
+const ComputerPlayer = (name, iconSrc, id) => {
+  const prototype = Player(name, iconSrc, id, true)
   let images = []
 
   function _hasImage(cardImage, position) {

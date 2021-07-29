@@ -48,11 +48,12 @@ function buildPlayer (topic, data) {
   let card = data.card
   let player = {
     name: data.player.name,
-    imageSrc: data.player.imageSrc,
+    iconSrc: data.player.iconSrc,
+    characterSrc: data.player.characterSrc,
     dom: createElement('img', 'player-image highlighted', null),
     id: data.player.id
   }
-  player.dom.src = data.player.imageSrc
+  player.dom.src = data.player.characterSrc
   player.dom.setAttribute('data-id', player.id)
   let firstChild = card.getDOM().children[0]
   card.getDOM().insertBefore(player.dom, firstChild)
@@ -210,7 +211,7 @@ function _createPlayerDisplayDOM (player) {
   _createPlayerLivesDOM(playerLives)
 
   playerName.textContent = player.name
-  playerIcon.src = player.imageSrc
+  playerIcon.src = player.iconSrc
   playerType.textContent = player.ai ? '(Bot)' : ''
   
   playerInfo.appendChild(playerIcon)
