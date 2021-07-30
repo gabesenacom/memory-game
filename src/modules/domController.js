@@ -124,13 +124,13 @@ function submitPlayerForm (topic, data) {
   }
 
   playerList.push(newPlayer)
-  _createPlayerListDOM(newPlayer, playerList)
+  _createPlayerListDOM(newPlayer, playerList, addButton)
   resetForm(event.target, currentIcon)
   event.target.classList.add('hidden')
   if (playerList.length < 4) addButton.classList.remove('hidden')
 }
 
-function _createPlayerListDOM (newPlayer, playerList) {
+function _createPlayerListDOM (newPlayer, playerList, addButton) {
   let newPlayerDOM = createElement('div', 'player-entry', playerListDisplay)
   let newPlayerName = createElement('p', null)
   let newPlayerIcon = createElement('img', null)
@@ -146,6 +146,7 @@ function _createPlayerListDOM (newPlayer, playerList) {
     let index = playerList.indexOf(newPlayer)
     playerList.splice(index, 1)
     newPlayerDOM.remove()
+    if (playerList.length < 4) addButton.classList.remove('hidden')
   })
 
   newPlayerDOM.appendChild(newPlayerIcon)
