@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memory Game</title>
+    <script src="https://kit.fontawesome.com/8398ae8baf.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -56,7 +57,7 @@
       <div id="form-container">
         <div>
           <h2>Players:</h2>
-          <button id="add-player">Add Player</button>
+          <i id="add-player" class="fas fa-plus-circle"></i>
         </div>
 
         <form action="" id="player-form" class="hidden" novalidate>
@@ -78,8 +79,8 @@
           <label for="playerType">
             Bot <input type="checkbox" name="playerType" id="playerType" value="computer">
           </label>
-          <button type="submit">Add</button>
-          <button id="cancel-player">Cancel</button>
+          <button type="submit"><i class="fas fa-plus-circle"></i></button>
+          <i id="cancel-player" class="fas fa-ban"></i>
         </form>
       </div>
       <div id="players"></div>

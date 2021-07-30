@@ -1,3 +1,21 @@
+@mixin icon($icon-color: rgb(72, 204, 72)) {
+  font-size: 2rem;
+  color: $icon-color;
+
+  &:hover {
+    cursor: pointer;
+    color: darken($icon-color, 20%);
+  }
+}
+
+i {
+  @include icon;
+
+  &.fa-ban {
+    @include icon($icon-color: red);
+  }
+}
+
 button {
   font-size: 1.5rem;
   background-color: rgb(126, 213, 216);
@@ -9,6 +27,13 @@ button {
   &:hover {
     cursor: pointer;
     background-color: darken(rgb(126, 213, 216), 20%);
+  }
+
+  &[type="submit"] {
+    padding: 0!important;
+    border: none!important;
+    font-size: 1rem!important;
+    background-color: inherit!important;
   }
 }
 

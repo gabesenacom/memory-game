@@ -69,7 +69,6 @@ const gameRules = document.getElementById('rules')
 const rulesModal = document.querySelector('.modal')
 const playerListDisplay = document.getElementById('players')
 const startupForm = document.getElementById('startup')
-const errors = document.getElementById('errors')
 const gameDisplay = document.getElementsByTagName('main')[0]
 
 function _isSameIcon(playerList, icon) {
@@ -142,12 +141,11 @@ function _createPlayerListDOM (newPlayer, playerList, addButton) {
   let newPlayerName = createElement('p', null)
   let newPlayerIcon = createElement('img', null)
   let newPlayerType = createElement('p', null)
-  let removePlayerButton = createElement('button', null)
+  let removePlayerButton = createElement('i', 'fas fa-ban')
 
   newPlayerName.textContent = newPlayer.name
   newPlayerIcon.src = newPlayer.icon
   newPlayerType.textContent = newPlayer.type ? '(Bot)' : ''
-  removePlayerButton.textContent = 'X'
 
   removePlayerButton.addEventListener('click', () => {
     let index = playerList.indexOf(newPlayer)
@@ -173,8 +171,6 @@ function showIconChoices (topic) {
 }
 
 function startGame (topic, playerList) {
-  removeChildren(errors)
-
   if (playerList.length < 2) {
     PubSub.publish(TOPIC.SEND_LOG, {
         type: 4,
