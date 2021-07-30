@@ -2,14 +2,14 @@ import PubSub from 'pubsub-js'
 import TOPIC from './topics'
 import './domController'
 
+const showRulesButton = document.querySelector('.show-rules')
 const addPlayerButton = document.getElementById('add-player')
 const cancelPlayerButton = document.getElementById('cancel-player')
 const playerForm = document.getElementById('player-form')
-const startButton = document.getElementById('start-game')
-const showRulesButton = document.querySelector('.show-rules')
 const currentIcon = document.getElementById('current-icon')
 const selectedIcon = document.getElementById('playerIcon')
 const iconChoices = document.querySelectorAll('.icon-choice')
+const startButton = document.getElementById('start-game')
 const playerList = []
 
 export function homePageInit () {

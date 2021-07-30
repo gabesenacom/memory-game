@@ -76,13 +76,35 @@ function _isSameIcon(playerList, icon) {
   return playerList.some((player) => player.icon === icon)
 }
 
-function showPlayerForm(topic, data) {
-  let { playerList, form, addButton, cancelButton } = data
-
+function _checkFormValidity (event, playerList, newPlayer) {
   if (playerList.length >= 4) {
-    console.log('Can\'t add more players')
-    return
+    PubSub.publish(TOPIC.SEND_LOG, {
+      type: 4,
+      message: 'Sorry, the max players is 4.'
+    })
+    return false
   }
+
+  if (!event.target.elements.playerName.validity.valid) {
+    PubSub.publish(TOPIC.SEND_LOG, {
+      type: 4,
+      message: 'Player name cannot be blank.'
+    })
+    return false
+  }
+
+  if(_isSameIcon(playerList, newPlayer.icon)) {
+    PubSub.publish(TOPIC.SEND_LOG, {
+        type: 4,
+        message: 'Sorry, you should to select another icon. This icon already selected.'
+      })
+    return false
+  }
+  return true
+}
+
+function showPlayerForm(topic, data) {
+  let { form, addButton, cancelButton } = data
 
   form.classList.remove('hidden')
   addButton.classList.add('hidden')
@@ -100,28 +122,13 @@ function hidePlayerForm(topic, data) {
 function submitPlayerForm (topic, data) {
   let { event, playerList, addButton } = data
 
-  if (playerList.length >= 4) {
-    PubSub.publish(TOPIC.SEND_LOG, {
-      type: 4,
-      message: 'Sorry, the max players is 4.'
-    })
-    return
-  }
-
   let newPlayer = {
     name: event.target.elements.playerName.value,
     type: event.target.elements.playerType.checked,
     icon: event.target.elements.playerIcon.value
   }
   
-
-  if(_isSameIcon(playerList, newPlayer.icon)) {
-    PubSub.publish(TOPIC.SEND_LOG, {
-        type: 4,
-        message: 'Sorry, you should to select another icon. This icon already selected.'
-      })
-    return
-  }
+  if (!_checkFormValidity(event, playerList, newPlayer)) return
 
   playerList.push(newPlayer)
   _createPlayerListDOM(newPlayer, playerList, addButton)
