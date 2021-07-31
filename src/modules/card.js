@@ -82,13 +82,10 @@ const FlippableCard = (
   } = Card(defaultBlankImage, parentNode, id, 'flippable card')
   let flipped = false
 
-  function _setImage (imageSrc) {
-    getDOM().style.backgroundImage = `url('${imageSrc}')`
-  }
-
   function flipImage () {
     flipped = !flipped
-    _setImage(flipped ? originalImageSrc : defaultBlankImage)
+    let image = flipped ? originalImageSrc : defaultBlankImage
+    PubSub.publishSync(TOPIC.FLIP_IMAGE, {image, dom: getDOM()})
   }
 
   function isFlipped () {
