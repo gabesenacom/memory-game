@@ -12,6 +12,16 @@ html {
   position: relative;
 }
 
+body {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+main {
+  max-width: 100% !important;
+}
+
 h1 {
   font-size: 3rem;
   text-align: center;

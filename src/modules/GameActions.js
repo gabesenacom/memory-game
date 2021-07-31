@@ -11,9 +11,9 @@ import {StaticCardList} from "./CardList"
 
 export const GameActions = (() => {
   function clickedAtSameImage (cardPlayerTurn, nextCard, nextCardPosition) {
-          PubSub.publish(TOPIC.SEND_LOG, {
+        PubSub.publish(TOPIC.SEND_LOG, {
         type: 2,
-        message: `The player ${Game.getPlayerTurn().name} found the correct image!`
+        message: `${Game.getPlayerTurn().name} found the correct image!`
       })
     while (nextCard.hasPlayer()) {
       let opponent = nextCard.getPlayer()
@@ -22,6 +22,8 @@ export const GameActions = (() => {
         opponent.finish_line -= 1
         PubSub.publish(TOPIC.UPDATE_FINISH_LINE, opponent)
       }
+
+      // Add SEND_LOG here
 
       Game.getPlayerTurn().finish_line += 1
       PubSub.publish(TOPIC.UPDATE_FINISH_LINE, Game.getPlayerTurn())
@@ -43,12 +45,13 @@ export const GameActions = (() => {
   }
 
   function skipToNextPlayer () {
+    let previousPlayer = Game.getPlayerTurn()
     let index = Game.players.indexOf(Game.getPlayerTurn())
     Game.setPlayerTurn(Game.players[getNextPlayerPosition(index)])
     console.log("player turn now", Game.getPlayerTurn().name)
     PubSub.publish(TOPIC.SEND_LOG, {
       type: 3,
-      message: `Wrong choose. Now ${Game.getPlayerTurn().name}'s turn.`
+      message: `${previousPlayer.name} chose wrong. Now it's ${Game.getPlayerTurn().name}'s turn.`
     })
 
     let cardPlayer = memoryCard.getCardPlayer(Game.getPlayerTurn())
@@ -66,7 +69,7 @@ export const GameActions = (() => {
     PubSub.publish(TOPIC.WON_THE_GAME, {winner})
     PubSub.publish(TOPIC.SEND_LOG, {
       type: 2,
-      message: `The player ${winner.name}'s wins the game!`
+      message: `${winner.name} wins the game!`
     })
   }
 
