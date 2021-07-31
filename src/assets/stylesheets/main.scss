@@ -39,9 +39,9 @@ h2 {
   margin: 0 auto;
 }
 
-#flippable-card-list .card {
-  min-height: 200px;
-  min-width: 200px;
+#flippable-card-list .card img{
+  max-height: 100px;
+  max-width: 100px;
 }
 
 .card {
