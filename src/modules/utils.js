@@ -17,6 +17,12 @@ export function clickOutsideElement (event, elementList, elementToHide) {
   }
 }
 
+export function getValidParentNode(target, validator, depth) {
+  if(validator(target)) return target
+  if(depth > 10) return target
+  return getValidParentNode(target.parentNode, validator, ++depth)
+}
+
 export function sortRandomArray (array) {
   return array.sort(() => 0.5 - Math.random())
 }
