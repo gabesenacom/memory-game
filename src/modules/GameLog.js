@@ -24,6 +24,7 @@ function sendLogMessage(logDOM, type, message) {
 
 function clearPendingLogs() {
   pendingLogs.forEach((pendingLog) => clearTimeout(pendingLog))
+  pendingLogs = []
 }
 
 
