@@ -4,12 +4,17 @@
 @use '_players';
 @use '_log';
 
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
+$main-font: 'Josefin Sans', Arial, sans-serif;
+
 * {
   box-sizing: border-box;
 }
 
 html {
   position: relative;
+  font-family: $main-font;
+  font-size: 16px;
 }
 
 body {
