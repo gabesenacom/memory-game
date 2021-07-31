@@ -1,7 +1,26 @@
 #log { 
   position: fixed;
   bottom: 0;
+  z-index: 1;
+  width: 50%;
+  font-size: 1.25rem;
+
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: -4px 5px grey;
   margin-bottom: 3rem;
-  text-align: center;
-  width: 100%
+  
+  background-color: rgba(255, 228, 196, 0.801);
+
+  &[data-type="success"] {
+    box-shadow: -4px 5px green;
+  }
+
+  &[data-type="warning"] {
+    box-shadow: -4px 5px yellow;
+  }
+
+  &[data-type="error"] {
+    box-shadow: -4px 5px red;
+  }
 }
