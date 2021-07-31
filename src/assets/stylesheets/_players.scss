@@ -1,9 +1,7 @@
 %players {
   width: 100%;
   display: flex;
-  justify-content: space-evenly;
   align-items: center;
-
   font-size: 1.2rem;
 
   padding-top: 10px;
@@ -12,35 +10,43 @@
 }
 
 %player-card {
-  min-width: 250px;
   display: flex;
   justify-content: center;
   align-items: center;
 
+  background-color: rgb(255, 228, 196);
+
   padding: 5px 10px;
   border: 1px solid black;
   border-radius: 5px;
+  box-shadow: -2px 3px grey;
 }
 
 #player-display {
   @extend %players;
-  border-bottom: 1px solid black;
+  justify-content: space-evenly;
 }
 
 #players {
   @extend %players;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .player-card {
   @extend %player-card;
+  width: 20%;
   flex-direction: column;
 }
 
 .player-entry {
   @extend %player-card;
+  width: 40%;
   justify-content: space-evenly;
   padding-top: 10px;
   padding-bottom: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
 }
 
 #player-list {
