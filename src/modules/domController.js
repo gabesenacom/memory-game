@@ -4,7 +4,8 @@ import "./GameLog"
 import {
   createElement,
   removeChildren,
-  clickOutsideElement
+  clickOutsideElement,
+  resetForm
 } from './utils'
 import { Game } from './Game'
 import { init } from './memoryCardController'
@@ -47,11 +48,12 @@ function buildPlayer (topic, data) {
   let card = data.card
   let player = {
     name: data.player.name,
-    imageSrc: data.player.imageSrc,
+    iconSrc: data.player.iconSrc,
+    characterSrc: data.player.characterSrc,
     dom: createElement('img', 'player-image highlighted', null),
     id: data.player.id
   }
-  player.dom.src = data.player.imageSrc
+  player.dom.src = data.player.characterSrc
   player.dom.setAttribute('data-id', player.id)
   let firstChild = card.getDOM().children[0]
   card.getDOM().insertBefore(player.dom, firstChild)
@@ -65,25 +67,59 @@ PubSub.subscribe(TOPIC.BUILD_PLAYER, buildPlayer)
 
 const gameRules = document.getElementById('rules')
 const rulesModal = document.querySelector('.modal')
-const playerListDisplay = document.getElementById('player-list')
+const playerListDisplay = document.getElementById('players')
 const startupForm = document.getElementById('startup')
-const errors = document.getElementById('errors')
 const gameDisplay = document.getElementsByTagName('main')[0]
 
 function _isSameIcon(playerList, icon) {
   return playerList.some((player) => player.icon === icon)
 }
 
-function submitPlayerForm (topic, data) {
-  let { event, playerList } = data
-
+function _checkFormValidity (event, playerList, newPlayer) {
   if (playerList.length >= 4) {
-      PubSub.publish(TOPIC.SEND_LOG, {
+    PubSub.publish(TOPIC.SEND_LOG, {
+      type: 4,
+      message: 'Sorry, the max players is 4.'
+    })
+    return false
+  }
+
+  if (!event.target.elements.playerName.validity.valid) {
+    PubSub.publish(TOPIC.SEND_LOG, {
+      type: 4,
+      message: 'Player name cannot be blank.'
+    })
+    return false
+  }
+
+  if(_isSameIcon(playerList, newPlayer.icon)) {
+    PubSub.publish(TOPIC.SEND_LOG, {
         type: 4,
-        message: 'Sorry, the max players is 4.'
+        message: 'Sorry, you should to select another icon. This icon already selected.'
       })
-      return
-    }
+    return false
+  }
+  return true
+}
+
+function showPlayerForm(topic, data) {
+  let { form, addButton, cancelButton } = data
+
+  form.classList.remove('hidden')
+  addButton.classList.add('hidden')
+  cancelButton.classList.remove('hidden')
+}
+
+function hidePlayerForm(topic, data) {
+  let { form, addButton } = data
+
+  resetForm(form, currentIcon)
+  form.classList.add('hidden')
+  addButton.classList.remove('hidden')
+}
+
+function submitPlayerForm (topic, data) {
+  let { event, playerList, addButton } = data
 
   let newPlayer = {
     name: event.target.elements.playerName.value,
@@ -91,36 +127,31 @@ function submitPlayerForm (topic, data) {
     icon: event.target.elements.playerIcon.value
   }
   
-
-  if(_isSameIcon(playerList, newPlayer.icon)) {
-    PubSub.publish(TOPIC.SEND_LOG, {
-        type: 4,
-        message: 'Sorry, you should to select another icon. This icon already selected.'
-      })
-    return
-  }
+  if (!_checkFormValidity(event, playerList, newPlayer)) return
 
   playerList.push(newPlayer)
-  _createPlayerListDOM(newPlayer, playerList)
-  event.target.reset()
+  _createPlayerListDOM(newPlayer, playerList, addButton)
+  resetForm(event.target, currentIcon)
+  event.target.classList.add('hidden')
+  if (playerList.length < 4) addButton.classList.remove('hidden')
 }
 
-function _createPlayerListDOM (newPlayer, playerList) {
+function _createPlayerListDOM (newPlayer, playerList, addButton) {
   let newPlayerDOM = createElement('div', 'player-entry', playerListDisplay)
   let newPlayerName = createElement('p', null)
   let newPlayerIcon = createElement('img', null)
   let newPlayerType = createElement('p', null)
-  let removePlayerButton = createElement('button', null)
+  let removePlayerButton = createElement('i', 'fas fa-ban')
 
   newPlayerName.textContent = newPlayer.name
   newPlayerIcon.src = newPlayer.icon
   newPlayerType.textContent = newPlayer.type ? '(Bot)' : ''
-  removePlayerButton.textContent = 'X'
 
   removePlayerButton.addEventListener('click', () => {
     let index = playerList.indexOf(newPlayer)
     playerList.splice(index, 1)
     newPlayerDOM.remove()
+    if (playerList.length < 4) addButton.classList.remove('hidden')
   })
 
   newPlayerDOM.appendChild(newPlayerIcon)
@@ -140,8 +171,6 @@ function showIconChoices (topic) {
 }
 
 function startGame (topic, playerList) {
-  removeChildren(errors)
-
   if (playerList.length < 2) {
     PubSub.publish(TOPIC.SEND_LOG, {
         type: 4,
@@ -162,6 +191,8 @@ function showRules (topic) {
   })
 }
 
+PubSub.subscribe(TOPIC.SHOW_PLAYER_FORM, showPlayerForm)
+PubSub.subscribe(TOPIC.HIDE_PLAYER_FORM, hidePlayerForm)
 PubSub.subscribe(TOPIC.SUBMIT_PLAYER_FORM, submitPlayerForm)
 PubSub.subscribe(TOPIC.START_GAME, startGame)
 PubSub.subscribe(TOPIC.SHOW_RULES, showRules)
@@ -184,7 +215,7 @@ function _createPlayerDisplayDOM (player) {
   _createPlayerLivesDOM(playerLives)
 
   playerName.textContent = player.name
-  playerIcon.src = player.imageSrc
+  playerIcon.src = player.iconSrc
   playerType.textContent = player.ai ? '(Bot)' : ''
   
   playerInfo.appendChild(playerIcon)

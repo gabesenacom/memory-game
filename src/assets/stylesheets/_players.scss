@@ -1,4 +1,4 @@
-#player-display {
+%players {
   width: 100%;
   display: flex;
   justify-content: space-evenly;
@@ -6,19 +6,66 @@
 
   padding-top: 10px;
   padding-bottom: 10px;
-  border-bottom: 1px solid black;
   margin-bottom: 10px;
 }
 
-.player-card {
+%player-card {
   width: 200px;
   display: flex;
+  justify-content: center;
   align-items: center;
-  flex-direction: column;
 
   padding: 5px 10px;
   border: 1px solid black;
   border-radius: 5px;
+}
+
+#player-display {
+  @extend %players;
+  border-bottom: 1px solid black;
+}
+
+#players {
+  @extend %players;
+}
+
+.player-card {
+  @extend %player-card;
+  flex-direction: column;
+}
+
+.player-entry {
+  @extend %player-card;
+  justify-content: space-evenly;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+#player-list {
+  width: 100%;
+}
+
+#form-container {
+  min-height: 108px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+
+  >div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+}
+
+#player-form {
+  min-width: 70%;
+}
+
+input {
+  margin-left: 8px;
 }
 
 .player-info {
