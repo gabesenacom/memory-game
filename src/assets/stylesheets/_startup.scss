@@ -80,8 +80,12 @@ button {
   }
 
   img {
-    border: 1px solid gray;
     margin-right: 10px;
+    max-width: 5rem;
+  }
+  
+  img:hover {
+    background-color: red;
   }
 
   button {
