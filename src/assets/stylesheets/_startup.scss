@@ -1,108 +1,130 @@
-@mixin icon($icon-color: rgb(72, 204, 72)) {
-  font-size: 2rem;
-  color: $icon-color;
+$default-color: #FFDD99;
+$highlight-color: #FCBF49;
+$highlight-color-light: #FFB217;
+$success-color: #06D6A0;
+$success-color-light: #51FBCD;
+$black-color: #000300;
+$danger-color: #f94144;
+$icon-width: 4rem;
+$thin-shadow: 0px 0.25rem 0.25rem rgba(0, 0, 0, 0.25);
 
-  &:hover {
-    cursor: pointer;
-    color: darken($icon-color, 20%);
-  }
+section  {
+  width: 45vw;
 }
 
-i {
-  @include icon;
-
-  &.fa-ban {
-    @include icon($icon-color: red);
-  }
+section h2 {
+  border-bottom: 0.1rem solid $black-color;
+  text-align: left;
+  margin: 1rem 0;
 }
 
-button {
-  font-size: 1.5rem;
-  font-family: inherit;
-  background-color: rgb(126, 213, 216);
-
-  border: 1px solid white;
-  border-radius: 5px;
-  padding: 10px;
-
-  &:hover {
-    cursor: pointer;
-    background-color: darken(rgb(126, 213, 216), 20%);
-  }
-
-  &[type="submit"] {
-    padding: 0!important;
-    border: none!important;
-    font-size: 1rem!important;
-    background-color: inherit!important;
-  }
+.btn {
+  padding: 1rem 0;
+  border-radius: 1rem;
+  box-shadow: -0.1rem 0.2rem 0 0 $highlight-color-light;
+  border: none;
+  width: 100%;
+  background-color: $default-color;
+  cursor: pointer;
+  transition: color ease 0.3s;
+font-size: $icon-width / 4;
 }
 
-#startup {
+.btn i {
+  font-size: $icon-width / 3;
+}
+
+#add-player {
+  background-color: $highlight-color;
+  box-shadow: -0.1rem 0.2rem 0 0 $success-color-light;
+}
+
+#start-game {
+  background-color: $success-color;
+  box-shadow: -0.1rem 0.2rem 0 0 $success-color-light;
+}
+
+.btn:hover {
+  box-shadow: -0.1rem 0.2rem 0.3rem 0.1rem $highlight-color-light !important;
+  color: white !important;
+}
+
+#form-action-buttons{
+  //max-width: 15% !important;
+  width: 30%;
+}
+
+#player-form {
+  margin: 1rem 0;
+}
+
+#form-action-buttons .btn{
+  height: 100% !important;
+}
+
+#group-addplayer-form, #form-action-buttons, #player-form {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  border: 1px solid grey;
-  border-radius: 5px;
-  width: 75%;
-  margin: auto;
-  margin-top: 20px;
-  padding: 10px;
-
-  >button {
-    padding: 10px 30px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-  }
-
-  h2 {
-    text-align: center;
-  }
+  justify-content: space-between;
 }
 
-#startup form {
-  display: flex;
+#group-addplayer-form {
   align-items: center;
-  justify-content: space-evenly;
-  font-size: 1.5rem;
+  justify-content: center;
+  background-color: $default-color;
+  padding: 0.3rem 0.5rem;
+  border-radius: 2rem;
+  box-shadow: $thin-shadow;
+}
 
-  border: 1px solid gray;
-  border-radius: 5px;
-  padding: 8px;
+#playerName {
+  outline: none;
+  border: none;
+  background: none;
+  border-bottom: 0.1rem solid $black-color;
+}
 
-  label {
-    display: flex;
-    margin-right: 10px;
-    line-height: 1.5;
-  }
+.add-player-form-btn {
+  background-color: $success-color;
+  margin: 0 1rem;
+}
 
-  input[type='checkbox']:hover {
-    cursor: pointer;
-  }
+#cancel-player {
+  background-color: $danger-color;
+}
 
-  img {
-    margin-right: 10px;
-    max-width: 5rem;
-  }
-  
-  img:hover {
-    background-color: red;
-  }
+#current-icon {
+  padding: 0.5rem;
+  max-width: $icon-width;
+  width: $icon-width;
+  height: auto;
+}
 
-  button {
-    font-size: 1.5rem;
-    background-color: rgb(126, 213, 216);
+#players {
 
-    border: 1px solid white;
-    border-radius: 5px;
-    padding: 10px;
-
-    &:hover {
+  .player-entry {
+    box-shadow: $thin-shadow;
+    background-color: $default-color;
+    border-radius: 2rem;
+    margin: 0;
+    padding: 0.3rem;
+    border: none;
+    img {
+      max-width: $icon-width;
+      width: $icon-width;
+      height: auto;
+    }
+    i {
+      font-size: $icon-width / 3;
+    }
+    i:hover {
+      color: $danger-color;
       cursor: pointer;
-      background-color: darken(rgb(126, 213, 216), 20%);
     }
   }
+}
+
+#player-list {
+  margin: 1rem 0;
 }
 
 #icon-select {
@@ -112,7 +134,8 @@ button {
 .icon-choice:hover,
 #current-icon:hover {
   cursor: pointer;
-  border-color: yellow!important;
+  background-color: $highlight-color-light;
+  border-radius: 3rem;
 }
 
 #icon-choices {
@@ -126,11 +149,10 @@ button {
   padding: 15px;
 
   img {
-    margin-left: 4px;
-    margin-right: 4px;
+    padding: 0.5rem;
+    max-width: $icon-width;
+    width: $icon-width;
+    height: auto;
+    margin: 0 0.5rem;
   }
-}
-
-.error {
-  color: red;
 }
