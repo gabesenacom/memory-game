@@ -1,7 +1,9 @@
 import { createElement } from './utils'
 import './domController'
+import PubSub from 'pubsub-js'
+import TOPIC from './topics'
 
-const DEFAULT_BLANK_IMAGE = 'images/blank.png'
+const DEFAULT_BLANK_IMAGE = 'images/animals/blank.svg'
 
 const Card = (imageSrc, parentNode, id, className = 'card') => {
   let image
@@ -80,13 +82,10 @@ const FlippableCard = (
   } = Card(defaultBlankImage, parentNode, id, 'flippable card')
   let flipped = false
 
-  function _setImage (imageSrc) {
-    getDOM().style.backgroundImage = `url('${imageSrc}')`
-  }
-
   function flipImage () {
     flipped = !flipped
-    _setImage(flipped ? originalImageSrc : defaultBlankImage)
+    let image = flipped ? originalImageSrc : defaultBlankImage
+    PubSub.publishSync(TOPIC.FLIP_IMAGE, {image, dom: getDOM()})
   }
 
   function isFlipped () {

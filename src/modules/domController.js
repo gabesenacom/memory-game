@@ -22,7 +22,7 @@ function buildCard (topic, card) {
   let cardDOM = createElement('div', className, card.getParentNode())
   card.setDOM(cardDOM)
   cardDOM.setAttribute('data-id', card.getId())
-  buildCardImage(cardDOM, className, imageSrc)
+  buildCardImage(cardDOM, imageSrc)
   if(isFlippableCard(className)) {
     cardDOM.addEventListener('click', Game.flipCardEvent)
   }
@@ -32,16 +32,17 @@ function isFlippableCard(className) {
   return className.includes('flippable card')
 }
 
-function buildCardImage(cardDOM, className, image) {
-  if(isFlippableCard(className)) {
-    cardDOM.style.backgroundImage = `url('${image}')`
-    return
-  }
-
+function buildCardImage(cardDOM, image) {
   let imageDOM = createElement('img', 'card-image', cardDOM)
   imageDOM.src = image
 }
 
+function flipCardImage(topic, {image, dom}) { 
+  let imageDOM = dom.querySelector('img')
+  imageDOM.src = image
+}
+
+PubSub.subscribe(TOPIC.FLIP_IMAGE, flipCardImage)
 // Player DOM
 
 function buildPlayer (topic, data) {
@@ -126,7 +127,7 @@ function submitPlayerForm (topic, data) {
     type: event.target.elements.playerType.checked,
     icon: event.target.elements.playerIcon.value
   }
-  
+
   if (!_checkFormValidity(event, playerList, newPlayer)) return
 
   playerList.push(newPlayer)

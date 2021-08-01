@@ -3,6 +3,7 @@ import TOPIC from './topics'
 import { GameActions } from './GameActions'
 import { memoryCard } from './memoryCard'
 import { getNextCardPosition } from './memoryCardController'
+import {getValidParentNode} from './utils'
 
 export const Game = (() => {
   let playerTurn = null
@@ -25,7 +26,11 @@ export const Game = (() => {
 
   function flipCardEvent (event) {
     if (playerTurn.ai) return
-    let cardId = Number.parseInt(event.target.getAttribute('data-id'))
+    let target = event.target
+    target = getValidParentNode(target, (toValidate) => {
+      return toValidate.hasAttribute('data-id') && toValidate.className.includes('flippable card')
+    })
+    let cardId = Number.parseInt(target.getAttribute('data-id'))
     let targetCard = memoryCard.getFlippableCardById(cardId)
     flipCard(targetCard)
   }

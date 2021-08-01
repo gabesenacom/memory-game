@@ -48,20 +48,15 @@ h2 {
 
 #flippable-card-list {
   display: flex;
-  width: 680px;
-  height: 500px;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   margin: 0 auto;
 }
 
-#flippable-card-list .card {
-  min-height: 100px;
-  min-width: 100px;
+#flippable-card-list .card img{
   max-height: 100px;
   max-width: 100px;
-  background-color: initial !important;
 }
 
 .card {
