@@ -38,6 +38,11 @@ h2 {
   margin-right: 8px;
 }
 
+#static-card-list {
+  background-image: url(../../../dist/images/backgrounds/sky.png);
+  background-size: contain;
+}
+
 #card-list {
   display: flex;
   max-width: 100% !important;
@@ -52,6 +57,7 @@ h2 {
   align-items: center;
   flex-wrap: wrap;
   margin: 0 auto;
+  background-color: #23BF76;
 }
 
 #flippable-card-list .card {

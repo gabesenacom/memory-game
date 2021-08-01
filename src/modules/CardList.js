@@ -1,11 +1,11 @@
 import {createElement, moveFirstChildToEnd} from "./utils"
 
-const mainDOM = document.querySelector("main")
+const staticCardDOM = document.getElementById("static-card-list")
 
 const _createCardList = (id) => {
   let dom = document.getElementById(id)
   if(dom == null ){
-    dom = createElement('ul', null, mainDOM)
+    dom = createElement('ul', null, staticCardDOM)
     dom.setAttribute('id', id)
   }
   return {dom}
