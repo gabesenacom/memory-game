@@ -101,6 +101,7 @@ export const Game = (() => {
     flipCard,
     flipCardEvent,
     players,
-    callAi
+    callAi,
+    getWinner
   }
 })()
