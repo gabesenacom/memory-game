@@ -35,15 +35,23 @@ export const GameActions = (() => {
         nextCardPosition = getNextCardPosition(nextCardPosition)
         nextCard = memoryCard.getCard(nextCardPosition)
       }
+      let winner = Game.getWinner()
+      if (winner != null) {
+        wonTheGame(winner)
+        break
+      }
     }
+    movePlayerToNextCard(nextCard, cardPlayerTurn, Game.getPlayerTurn())
+  }
 
+  function movePlayerToNextCard(nextCard, cardPlayerTurn, player) {
     StaticCardList.scrollTo(nextCard.getDOM())
     StaticCardList.moveToEndIfReach(nextCard.getDOM())
 
     cardPlayerTurn.removePlayer()
     PubSub.publishSync(TOPIC.BUILD_PLAYER, {
       card: nextCard,
-      player: Game.getPlayerTurn()
+      player
     })
   }
 
@@ -51,7 +59,6 @@ export const GameActions = (() => {
     let previousPlayer = Game.getPlayerTurn()
     let index = Game.players.indexOf(Game.getPlayerTurn())
     Game.setPlayerTurn(Game.players[getNextPlayerPosition(index)])
-    console.log("player turn now", Game.getPlayerTurn().name)
     PubSub.publish(TOPIC.SEND_LOG, {
       type: 3,
       message: `${previousPlayer.name} chose wrong. Now it's ${Game.getPlayerTurn().name}'s turn.`

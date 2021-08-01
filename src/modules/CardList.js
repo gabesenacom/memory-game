@@ -24,9 +24,7 @@ const StaticCardList = (() => {
   }
 
   function scrollTo(cardDOM) {
-
-    let {right} = cardDOM.getBoundingClientRect()
-    dom.scrollTo(right, 0)
+    cardDOM.scrollIntoView({block: "center", inline: "center"})
   }
 
   return {dom, scrollTo, moveToEndIfReach};
