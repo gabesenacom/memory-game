@@ -54,9 +54,16 @@ h2 {
   margin: 0 auto;
 }
 
-#flippable-card-list .card img{
-  max-height: 100px;
-  max-width: 100px;
+#flippable-card-list .card {
+  width: (100% / 6);
+  margin-right: 0;
+  margin-left: 0;
+  margin-bottom: 0;
+
+  img {
+    max-height: 100px;
+    max-width: 100px;
+  }
 }
 
 .card {
@@ -68,6 +75,9 @@ h2 {
 
 #card-list .card {
   flex-direction: column;
+  justify-content: flex-end;
+  min-height: 316px;
+  max-height: 316px;
 }
 
 .hidden {

@@ -211,20 +211,18 @@ function _createPlayerDisplayDOM (player) {
   let playerInfo = createElement('div', 'player-info', playerCard)
   let playerName = createElement('p', null)
   let playerIcon = createElement('img', null)
-  let playerType = createElement('p', null)
   let playerLives = createElement('div', 'player-lives')
   _createPlayerLivesDOM(playerLives)
 
-  playerName.textContent = player.name
   playerIcon.src = player.iconSrc
-  playerType.textContent = player.ai ? '(Bot)' : ''
+  playerName.textContent = player.name
+  playerName.textContent += player.ai ? ' (Bot)' : ''
   
-  playerInfo.appendChild(playerIcon)
   playerInfo.appendChild(playerName)
-  playerInfo.appendChild(playerType)
+  playerInfo.appendChild(playerLives)
 
+  playerCard.appendChild(playerIcon)
   playerCard.appendChild(playerInfo)
-  playerCard.appendChild(playerLives)
 }
 
 function _createPlayerLivesDOM (playerLives) {
