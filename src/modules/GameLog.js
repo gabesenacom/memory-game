@@ -8,6 +8,11 @@ const _createLogDOMElement = () => {
   return element
 }
 
+
+function _clickToHide(logDOM) {
+  logDOM.addEventListener('click', () => logDOM.classList.add('hidden'))
+}
+
 const logDOM = _createLogDOMElement()
 
 let pendingLogs = []
@@ -19,6 +24,7 @@ function sendLogMessage(logDOM, type, message) {
   logDOM.setAttribute("id", 'log')
   logDOM.textContent = message
   let pendingLog = setTimeout(() => logDOM.classList.add("hidden"), 4000)
+  _clickToHide(logDOM, pendingLog)
   pendingLogs.push(pendingLog)
 }
 
@@ -26,7 +32,6 @@ function clearPendingLogs() {
   pendingLogs.forEach((pendingLog) => clearTimeout(pendingLog))
   pendingLogs = []
 }
-
 
 /* expect type structure
   type    = value

@@ -211,27 +211,25 @@ function _createPlayerDisplayDOM (player) {
   let playerInfo = createElement('div', 'player-info', playerCard)
   let playerName = createElement('p', null)
   let playerIcon = createElement('img', null)
-  let playerType = createElement('p', null)
   let playerLives = createElement('div', 'player-lives')
   _createPlayerLivesDOM(playerLives)
 
-  playerName.textContent = player.name
   playerIcon.src = player.iconSrc
-  playerType.textContent = player.ai ? '(Bot)' : ''
+  playerName.textContent = player.name
+  playerName.textContent += player.ai ? ' (Bot)' : ''
   
-  playerInfo.appendChild(playerIcon)
   playerInfo.appendChild(playerName)
-  playerInfo.appendChild(playerType)
+  playerInfo.appendChild(playerLives)
 
+  playerCard.appendChild(playerIcon)
   playerCard.appendChild(playerInfo)
-  playerCard.appendChild(playerLives)
 }
 
 function _createPlayerLivesDOM (playerLives) {
-  let lifeOne = createElement('div', 'life', playerLives)
-  let lifeTwo = createElement('div', 'life', playerLives)
-  let lifeThree = createElement('div', 'life', playerLives)
-  let lifeFour = createElement('div', 'life', playerLives)
+  let lifeOne = createElement('i', 'life fas fa-heart', playerLives)
+  let lifeTwo = createElement('i', 'life fas fa-heart', playerLives)
+  let lifeThree = createElement('i', 'life fas fa-heart', playerLives)
+  let lifeFour = createElement('i', 'life fas fa-heart', playerLives)
 
   lifeOne.setAttribute('data-id', 1)
   lifeTwo.setAttribute('data-id', 2)
@@ -281,14 +279,14 @@ function updateFinishLine (topic, player) {
 }
 
 function _clearLives (playerLives) {
-  let livesToClear = playerLives.querySelectorAll('div')
+  let livesToClear = playerLives.querySelectorAll('i')
   livesToClear.forEach(life => life.classList.remove('filled'))
 }
 
 function _addLives (playerLives, finish_line) {
   if (finish_line === 0) return
   for(let i = 1; i < finish_line+1; i++) {
-    let lifeToFill = playerLives.querySelector(`div[data-id='${i}']`)
+    let lifeToFill = playerLives.querySelector(`i[data-id='${i}']`)
     lifeToFill.classList.add('filled')
   }
 }

@@ -8,10 +8,6 @@
 
   display: flex;
   justify-content: center;
-
-  section {
-    display: flex;
-  }
 }
 
 figure {
@@ -52,17 +48,23 @@ figure {
 
   p {
     font-size: 1.25rem;
+    margin-bottom: 1.2rem;
   }
 
   div {
     width: 100%;
     display: flex;
-    flex-direction: column;
 
     line-height: 1.2;
 
     &:first-child {
+      flex-direction: column;
       justify-content: space-around;
+    }
+
+    &:last-child {
+      flex-wrap: wrap;
+      justify-content: space-evenly;
     }
   }
 }

@@ -23,4 +23,8 @@
   &[data-type="error"] {
     box-shadow: -4px 5px red;
   }
+
+  &:hover {
+    cursor: pointer;
+  }
 }

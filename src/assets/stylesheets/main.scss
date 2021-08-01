@@ -4,8 +4,8 @@
 @use '_players';
 @use '_log';
 
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
-$main-font: 'Josefin Sans', Arial, sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=ABeeZee&display=swap');
+$main-font: 'ABeeZee', Arial, sans-serif;
 
 * {
   box-sizing: border-box;
@@ -38,6 +38,11 @@ h2 {
   margin-right: 8px;
 }
 
+#static-card-list {
+  background-image: url(../../../dist/images/backgrounds/sky.png);
+  background-size: contain;
+}
+
 #card-list {
   display: flex;
   max-width: 100% !important;
@@ -52,11 +57,21 @@ h2 {
   align-items: center;
   flex-wrap: wrap;
   margin: 0 auto;
+  background-color: #23BF76;
 }
 
-#flippable-card-list .card img{
-  max-height: 100px;
-  max-width: 100px;
+#flippable-card-list .card {
+  width: (100% / 6);
+  margin: 0;
+
+  img {
+    max-height: 120px;
+    max-width: 120px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
 
 .card {
@@ -68,6 +83,9 @@ h2 {
 
 #card-list .card {
   flex-direction: column;
+  justify-content: flex-end;
+  min-height: 316px;
+  max-height: 316px;
 }
 
 .hidden {
