@@ -9,6 +9,13 @@ module.exports = {
           test: /\.(css|scss)$/,
           use: ['style-loader', 'css-loader', 'sass-loader']
       },
+      {
+
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+
+        type: 'asset/resource',
+
+      },
     ],
   },
   devServer: {
