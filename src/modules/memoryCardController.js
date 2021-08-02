@@ -61,6 +61,13 @@ function init (playerList) {
     type: 1,
     message: `Game started! The player ${Game.getPlayerTurn().name} starts.`
   })
+
+  let cardPlayerDOM = memoryCard.getCardPlayer(Game.getPlayerTurn()).getDOM()
+  setTimeout(() => {
+    StaticCardList.scrollTo(cardPlayerDOM)
+    StaticCardList.moveToEndIfReach(cardPlayerDOM)
+  }, 300)
+
   Game.callAi()
 }
 
