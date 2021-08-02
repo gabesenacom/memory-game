@@ -85,6 +85,14 @@ function _checkFormValidity (event, playerList, newPlayer) {
     return false
   }
 
+  if (playerList.some((player) => player.name == newPlayer.name)) {
+    PubSub.publish(TOPIC.SEND_LOG, {
+      type: 4,
+      message: 'Sorry, this name already in use.'
+    })
+    return false
+  }
+
   if (!event.target.elements.playerName.validity.valid) {
     PubSub.publish(TOPIC.SEND_LOG, {
       type: 4,

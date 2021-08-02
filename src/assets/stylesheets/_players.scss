@@ -27,6 +27,14 @@
   justify-content: space-evenly;
   max-height: 150px;
   margin-bottom: 0;
+
+  .player-info {
+    max-width: 50%;
+    p {
+      overflow: hidden;
+      max-width: 50%;
+    }
+  }
 }
 
 #players {
@@ -50,36 +58,11 @@
 .player-entry {
   @extend %player-card;
   width: 40%;
-  min-height: 129px;
-  max-height: 130px;
   justify-content: space-evenly;
   padding-top: 10px;
   padding-bottom: 10px;
   margin-bottom: 10px;
   margin-left: 10px;
-}
-
-#player-list {
-  width: 100%;
-}
-
-#form-container {
-  min-height: 108px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px;
-
-  >div {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-}
-
-#player-form {
-  min-width: 70%;
 }
 
 input {
