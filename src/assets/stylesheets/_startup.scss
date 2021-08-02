@@ -8,6 +8,10 @@ $danger-color: #f94144;
 $icon-width: 4rem;
 $thin-shadow: 0px 0.25rem 0.25rem rgba(0, 0, 0, 0.25);
 
+body {
+  background-image: url('background.png');
+}
+
 section  {
   width: 45vw;
 }
@@ -50,7 +54,6 @@ font-size: $icon-width / 4;
 }
 
 #form-action-buttons{
-  //max-width: 15% !important;
   width: 30%;
 }
 
@@ -105,13 +108,14 @@ font-size: $icon-width / 4;
     box-shadow: $thin-shadow;
     background-color: $default-color;
     border-radius: 2rem;
-    margin: 0.3rem 0;
+    margin: 0.3rem 0.3rem;
     padding: 0.3rem;
     border: none;
     img {
       max-width: $icon-width;
       width: $icon-width;
       height: auto;
+      max-height: $icon-width;
     }
     i {
       font-size: $icon-width / 3;
