@@ -9,6 +9,7 @@ import {
 } from './utils'
 import { Game } from './Game'
 import { init } from './memoryCardController'
+import Icon1 from '../assets/images/characters/char-head-1.png'
 
 // Card DOM
 /* expect data structure
@@ -76,6 +77,14 @@ function _isSameIcon(playerList, icon) {
   return playerList.some((player) => player.icon === icon)
 }
 
+function _checkIconValue(value) {
+  if (value === 'default') {
+    return Icon1
+  } else {
+    return value
+  }
+}
+
 function _checkFormValidity (event, playerList, newPlayer) {
   if (playerList.length >= 4) {
     PubSub.publish(TOPIC.SEND_LOG, {
@@ -138,10 +147,12 @@ function hidePlayerForm(topic, data) {
 function submitPlayerForm (topic, data) {
   let { event, playerList, addButton } = data
 
+  let iconValue = _checkIconValue(event.target.elements.playerIcon.value)
+
   let newPlayer = {
     name: event.target.elements.playerName.value,
     type: event.target.elements.playerType.checked,
-    icon: event.target.elements.playerIcon.value
+    icon: iconValue
   }
 
   if (!_checkFormValidity(event, playerList, newPlayer)) return

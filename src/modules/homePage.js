@@ -56,11 +56,7 @@ export function homePageInit () {
   iconChoices.forEach(choice => {
     choice.addEventListener('click', () => {
       currentIcon.src = choice.src
-      let fixURL = choice.src
-      if(fixURL.includes('127.0.0.1') || fixURL.includes('localhost')) {
-        fixURL = fixURL.match(/images\/characters\/.+/)[0]
-      }
-      selectedIcon.value = fixURL
+      selectedIcon.value = choice.src
     })
   })
 }
