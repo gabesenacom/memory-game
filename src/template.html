@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Memory Game</title>
+    <script
+      src="https://kit.fontawesome.com/8398ae8baf.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <!-- Rules -->
+    <div id="rules" class="hidden">
+      <div class="modal">
+        <h2>How to Play</h2>
+        <section>
+          <div>
+            <p>
+              The goal of Memory Game is to move your ranger past every single
+              other player's ranger, stealing a life from each one as you go by
+              them. The first player to collect all of the lives wins.
+            </p>
+            <p>
+              The game is played in turns, with players attempting to move their
+              rangers down the pathway. On a player's turn, they look at the
+              image on the next tile in front of their ranger. The player then
+              flips over one of the face-down tiles. If the tile that was
+              flipped over shows the same image as the next tile in front of the
+              ranger, the player moves forward one space on to that tile, and
+              then repeats the process with the next tile. When the player flips
+              over a tile with an image that does not match the next tile in
+              front of their ranger, their turn ends and their ranger goes no
+              farther.
+            </p>
+            <p>
+              If the next tile in front of a player is occupied by someone
+              else's ranger, and the player succeeds in matching that tile,
+              their ranger "leapfrogs" over the ranger in front of them to land
+              on the next tile in front of that player, and in the process
+              steals all lives that the other ranger had - including those it
+              stole from other players in the same manner. When one player has
+              all of the lives, that player wins the game.
+            </p>
+          </div>
+          <div>
+            <figure>
+              <img src="./assets/images/rules/basic_movement.gif" alt="" width="400" />
+              <figcaption>
+                Match a face-down tile with the tile in front of your character
+                to advance.
+              </figcaption>
+            </figure>
+            <figure>
+              <img src="./assets/images/rules/leap_over_player.gif" alt="" />
+              <figcaption>
+                When another player is in your path and you get a correct match,
+                you will leap over their character.
+              </figcaption>
+            </figure>
+            <figure>
+              <img src="./assets/images/rules/after_leap.gif" alt="" />
+              <figcaption>
+                When you leap over another character, you steal their lives!
+              </figcaption>
+            </figure>
+            <figure>
+              <img src="./assets/images/rules/leap_over_two.gif" alt="" />
+              <figcaption>
+                You can jump over more than one player at once, stealing all of
+                their lives in the process!
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+        <button class="hide-rules">Close</button>
+      </div>
+    </div>
+
+    <!-- Home Page -->
+    <div id="startup">
+      <h1>Memory Game</h1>
+      <section id="homepage-section">
+        <h2>Home</h2>
+        <button class="btn show-rules">How to Play</button>
+      </section>
+
+      <section id="player-list">
+        <div id="form-container">
+          <h2>Players:</h2>
+          <div id="players">
+          </div>
+          <button class="btn" id="add-player">
+            <i class="fas fa-plus-circle"></i>Add new player
+          </button>
+          <form action="" id="player-form" class="hidden" novalidate>
+            <div id="group-addplayer-form">
+              <div id="icon-select">
+                <div id="icon-choices" class="hidden">
+                  <img
+                    src="./assets/images/characters/char-head-1.png"
+                    alt=""
+                    class="icon-choice"
+                  />
+                  <img
+                    src="./assets/images/characters/char-head-2.png"
+                    alt=""
+                    class="icon-choice"
+                  />
+                  <img
+                  src="./assets/images/characters/char-head-3.png"
+                    alt=""
+                    class="icon-choice"
+                  />
+                  <img
+                    src="./assets/images/characters/char-head-4.png"
+                    alt=""
+                    class="icon-choice"
+                  />
+                  <img
+                    src="./assets/images/characters/char-head-5.png"
+                    alt=""
+                    class="icon-choice"
+                  />
+                  <img
+                    src="./assets/images/characters/char-head-6.png"
+                    alt=""
+                    class="icon-choice"
+                  />
+                </div>
+              </div>
+              <img
+                src="./assets/images/characters/char-head-1.png"
+                alt=""
+                id="current-icon"
+              />
+              <input
+                type="text"
+                name="playerIcon"
+                id="playerIcon"
+                hidden
+                value="default"
+              />
+              <label for="playerName">
+                <input
+                  placeholder="Insert player name here"
+                  type="text"
+                  id="playerName"
+                  name="playerName"
+                  pattern="^.*\S.*$"
+                  required
+                />
+              </label>
+              <label for="playerType">
+                Bot
+                <input
+                  type="checkbox"
+                  name="playerType"
+                  id="playerType"
+                  value="computer"
+                />
+              </label>
+            </div>
+            <div id="form-action-buttons">
+              <button type="submit" class="btn add-player-form-btn">
+                <i class="fas fa-plus-circle"></i>Add
+              </button>
+              <button id="cancel-player" class="btn">
+                <i class="fas fa-ban"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <button id="start-game" class="btn">Start Game</button>
+    </div>
+  <!-- Main Game -->
+  <main class="hidden">
+    <div id="static-card-list">
+      <div id="player-display"></div>
+      <ul id="card-list"></ul>
+    </div>
+    <ul id="flippable-card-list"></ul>
+  </main>
+</body>
+</html>
