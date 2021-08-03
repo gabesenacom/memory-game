@@ -93,6 +93,14 @@ function _checkFormValidity (event, playerList, newPlayer) {
     return false
   }
 
+  if (newPlayer.name.length > 16) {
+    PubSub.publish(TOPIC.SEND_LOG, {
+      type: 4,
+      message: 'The max name length is 16 characters.'
+    })
+    return false
+  }
+
   if (!event.target.elements.playerName.validity.valid) {
     PubSub.publish(TOPIC.SEND_LOG, {
       type: 4,
