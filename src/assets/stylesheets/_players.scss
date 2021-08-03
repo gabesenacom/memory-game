@@ -27,14 +27,6 @@
   justify-content: space-evenly;
   max-height: 150px;
   margin-bottom: 0;
-
-  .player-info {
-    max-width: 50%;
-    p {
-      overflow: hidden;
-      max-width: 50%;
-    }
-  }
 }
 
 #players {
@@ -82,13 +74,14 @@ input {
   p {
     display: flex;
     align-items: center;
-    margin-left: 5px;
     margin-bottom: 5px;
+    max-width: 200px;
+    overflow: hidden;
   }
 }
 
-.highlighted {
-  border: 2px solid magenta!important;
+.player-card.highlighted {
+  background-color: #06D6A0;
 }
 
 .player-lives {
