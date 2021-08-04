@@ -71,6 +71,7 @@ const gameRules = document.getElementById('rules')
 const rulesModal = document.querySelector('.modal')
 const playerListDisplay = document.getElementById('players')
 const startupForm = document.getElementById('startup')
+const playerForm = document.querySelector('form');
 const gameDisplay = document.getElementsByTagName('main')[0]
 
 function _isSameIcon(playerList, icon) {
@@ -179,7 +180,9 @@ function _createPlayerListDOM (newPlayer, playerList, addButton) {
     let index = playerList.indexOf(newPlayer)
     playerList.splice(index, 1)
     newPlayerDOM.remove()
-    if (playerList.length < 4) addButton.classList.remove('hidden')
+    if (playerList.length < 4 && playerForm.classList.contains('hidden')) {
+      addButton.classList.remove('hidden')
+    }
   })
 
   newPlayerDOM.appendChild(newPlayerIcon)
