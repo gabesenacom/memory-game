@@ -202,6 +202,9 @@ function showIconChoices (topic) {
 }
 
 function startGame (topic, playerList) {
+  let creditsButton = document.querySelector('.credits-button')
+  if(creditsButton) creditsButton.remove()
+    
   if (playerList.length < 2) {
     PubSub.publish(TOPIC.SEND_LOG, {
         type: 4,
