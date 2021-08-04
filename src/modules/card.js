@@ -2,8 +2,9 @@ import { createElement } from './utils'
 import './domController'
 import PubSub from 'pubsub-js'
 import TOPIC from './topics'
+import Blank from '../assets/images/animals/blank.svg'
 
-const DEFAULT_BLANK_IMAGE = 'images/animals/blank.svg'
+const DEFAULT_BLANK_IMAGE = Blank
 
 const Card = (imageSrc, parentNode, id, className = 'card') => {
   let image

@@ -1,3 +1,5 @@
+import Icon1 from '../assets/images/characters/char-head-1.png'
+
 export const createElement = (tag, className, parentNode = null) => {
   let element = document.createElement(tag)
   if(className) element.className = className
@@ -40,5 +42,5 @@ export function moveFirstChildToEnd(parentNode) {
 
 export function resetForm(form, icon) {
   form.reset()
-  icon.src = form.elements.playerIcon.value
+  icon.src = Icon1
 }
