@@ -71,6 +71,7 @@ const gameRules = document.getElementById('rules')
 const rulesModal = document.querySelector('.modal')
 const playerListDisplay = document.getElementById('players')
 const startupForm = document.getElementById('startup')
+const playerForm = document.querySelector('form');
 const gameDisplay = document.getElementsByTagName('main')[0]
 
 function _isSameIcon(playerList, icon) {
@@ -89,7 +90,7 @@ function _checkFormValidity (event, playerList, newPlayer) {
   if (playerList.length >= 4) {
     PubSub.publish(TOPIC.SEND_LOG, {
       type: 4,
-      message: 'Sorry, the max players is 4.'
+      message: 'Sorry, the max number of players is 4.'
     })
     return false
   }
@@ -97,7 +98,7 @@ function _checkFormValidity (event, playerList, newPlayer) {
   if (playerList.some((player) => player.name == newPlayer.name)) {
     PubSub.publish(TOPIC.SEND_LOG, {
       type: 4,
-      message: 'Sorry, this name already in use.'
+      message: 'Sorry, this name is already in use.'
     })
     return false
   }
@@ -121,7 +122,7 @@ function _checkFormValidity (event, playerList, newPlayer) {
   if(_isSameIcon(playerList, newPlayer.icon)) {
     PubSub.publish(TOPIC.SEND_LOG, {
         type: 4,
-        message: 'Sorry, you should to select another icon. This icon already selected.'
+        message: 'This icon has already been selected. Please choose another one.'
       })
     return false
   }
@@ -179,7 +180,9 @@ function _createPlayerListDOM (newPlayer, playerList, addButton) {
     let index = playerList.indexOf(newPlayer)
     playerList.splice(index, 1)
     newPlayerDOM.remove()
-    if (playerList.length < 4) addButton.classList.remove('hidden')
+    if (playerList.length < 4 && playerForm.classList.contains('hidden')) {
+      addButton.classList.remove('hidden')
+    }
   })
 
   newPlayerDOM.appendChild(newPlayerIcon)
@@ -202,7 +205,7 @@ function startGame (topic, playerList) {
   if (playerList.length < 2) {
     PubSub.publish(TOPIC.SEND_LOG, {
         type: 4,
-        message: 'You must have at least 2 players to play!'
+        message: 'You must have at least 2 players to play.'
       })
     return
   }
