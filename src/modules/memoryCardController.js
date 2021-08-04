@@ -59,7 +59,7 @@ function init (playerList) {
   setRandomPlayerTurn()
   PubSub.publish(TOPIC.SEND_LOG, {
     type: 1,
-    message: `Game started! The player ${Game.getPlayerTurn().name} starts.`
+    message: `Welcome to Creature Clash! ${Game.getPlayerTurn().name} goes first.`
   })
 
   let cardPlayerDOM = memoryCard.getCardPlayer(Game.getPlayerTurn()).getDOM()

@@ -25,7 +25,7 @@ export const GameActions = (() => {
 
       PubSub.publish(TOPIC.SEND_LOG, {
         type: 2,
-        message: `${Game.getPlayerTurn().name} jumped over ${opponent.name} and stole their lives!`
+        message: `${Game.getPlayerTurn().name} jumped over ${opponent.name} and stole their hearts!`
       })
 
       Game.getPlayerTurn().finish_line += 1
