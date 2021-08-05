@@ -1,5 +1,6 @@
 # Creature Clash
 Go wild in this animal-themed memory matching game!
+
 ![Creature Clash banner image](./src/assets/images/screenshots/creature_clash_banner_wide.png)
 
 ## Play it Now
@@ -28,18 +29,15 @@ Despite all of this... making this game was a blast! We all learned so much from
 
 The goal of Creature Clash is to move your character past every single other player's character, stealing a heart from each one as you go by them. The first player to collect all of the hearts wins.
 
+<img src="./src/assets/images/rules/basic_movement.gif" alt="basic player movement" width="300">
+
 The game is played in turns, with players attempting to move their characters down the pathway. On a player's turn, they look at the image on the next tile in front of their character. The player then flips over one of the face-down tiles. If the tile that was flipped over shows the same image as the next tile in front of the character, the player moves forward one space on to that tile, and then repeats the process with the next tile. When the player flips character goes no further.
 
-<div width="100%" style="display: flex; justify-content: center">
-  <img src="./src/assets/images/rules/basic_movement.gif" alt="basic player movement" width="300">
-</div>
+<img src="./src/assets/images/rules/after_leap.gif" alt="leaping over another player" width="300">
 
 If the next tile in front of a player is occupied by someone else's character, and the player succeeds in matching that tile, their character "leapfrogs" over the character in front of them to land on the next tile in front of that player, and in the process steals all hearts that the other player had - including those it stole from other players in the same manner. When one player has all of the hearts, that player wins the game.
 
-<div width="100%" style="display: flex; justify-content: space-evenly">
-  <img src="./src/assets/images/rules/after_leap.gif" alt="leaping over another player" width="300">
-  <img src="./src/assets/images/rules/leap_over_two.gif" alt="leaping over two players at once" width="300">
-</div>
+<img src="./src/assets/images/rules/leap_over_two.gif" alt="leaping over two players at once" width="300">
 
 
 ## Tools Used
@@ -62,6 +60,8 @@ If the next tile in front of a player is occupied by someone else's character, a
 
 Link to our GitHub pages or to CREDITS.md.
 Our team is @Adrian.Moncada, @gabesenacom, and @Ubercj.
+
+And of course, thank you to [The Odin Project](https://www.theodinproject.com/) and the community on Discord for organizing this Game Jam and for helping us develop the knowledge and skills we used to make this game!
 
 ## License
 
