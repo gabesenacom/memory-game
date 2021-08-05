@@ -170,7 +170,7 @@ function _createPlayerListDOM (newPlayer, playerList, addButton) {
   let newPlayerName = createElement('p', null)
   let newPlayerIcon = createElement('img', null)
   let newPlayerType = createElement('p', null)
-  let removePlayerButton = createElement('i', 'fas fa-ban')
+  let removePlayerButton = createElement('i', 'fas fa-times')
 
   newPlayerName.textContent = newPlayer.name
   newPlayerIcon.src = newPlayer.icon
@@ -202,6 +202,9 @@ function showIconChoices (topic) {
 }
 
 function startGame (topic, playerList) {
+  let creditsButton = document.querySelector('.credits-button')
+  if(creditsButton) creditsButton.remove()
+    
   if (playerList.length < 2) {
     PubSub.publish(TOPIC.SEND_LOG, {
         type: 4,
