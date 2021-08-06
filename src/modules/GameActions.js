@@ -76,7 +76,7 @@ export const GameActions = (() => {
       )
     PubSub.publish(TOPIC.WON_THE_GAME, {winner})
     PubSub.publish(TOPIC.SEND_LOG, {
-      type: 2,
+      type: 5,
       message: `${winner.name} wins the game!`
     })
   }
