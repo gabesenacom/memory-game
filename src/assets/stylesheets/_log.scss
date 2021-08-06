@@ -1,6 +1,6 @@
 #log { 
   position: fixed;
-  bottom: 0;
+  top: 0;
   z-index: 1;
   width: 50%;
   font-size: 1.25rem;
@@ -8,9 +8,9 @@
   padding: 20px;
   border-radius: 10px;
   box-shadow: -4px 5px grey;
-  margin-bottom: 3rem;
+  margin-top: 120px;
   
-  background-color: rgba(255, 228, 196, 0.801);
+  background-color: rgba(255, 228, 196, 0.9);
 
   &[data-type="success"] {
     box-shadow: -4px 5px green;
