@@ -237,7 +237,7 @@ PubSub.subscribe(TOPIC.SHOW_ICON_CHOICES, showIconChoices)
 const cardList = document.getElementById('card-list')
 const playerDisplay = document.getElementById('player-display');
 
-function _createPlayerDisplayDOM (player) {
+function _createPlayerDisplayDOM (player, playerList) {
   let playerCard = createElement('div', 'player-card', playerDisplay)
   playerCard.setAttribute('data-id', player.id)
 
@@ -245,7 +245,7 @@ function _createPlayerDisplayDOM (player) {
   let playerName = createElement('p', null)
   let playerIcon = createElement('img', null)
   let playerLives = createElement('div', 'player-lives')
-  _createPlayerLivesDOM(playerLives)
+  _createPlayerLivesDOM(playerLives, playerList)
 
   playerIcon.src = player.iconSrc
   playerName.textContent = player.name
@@ -258,18 +258,13 @@ function _createPlayerDisplayDOM (player) {
   playerCard.appendChild(playerInfo)
 }
 
-function _createPlayerLivesDOM (playerLives) {
-  let lifeOne = createElement('i', 'life fas fa-heart', playerLives)
-  let lifeTwo = createElement('i', 'life fas fa-heart', playerLives)
-  let lifeThree = createElement('i', 'life fas fa-heart', playerLives)
-  let lifeFour = createElement('i', 'life fas fa-heart', playerLives)
+function _createPlayerLivesDOM (playerLives, playerList) {
+  for (let i = 1; i <= playerList.length; i++) {
+    let lifeDOM = createElement('i', 'life fas fa-heart', playerLives)
+    lifeDOM.setAttribute('data-id', i)
+  }
 
-  lifeOne.setAttribute('data-id', 1)
-  lifeTwo.setAttribute('data-id', 2)
-  lifeThree.setAttribute('data-id', 3)
-  lifeFour.setAttribute('data-id', 4)
-
-  lifeOne.classList.add('filled')
+  playerLives.querySelector("[data-id='1']").classList.add('filled')
 }
 
 function _removePlayerHighlights(playerList) {
@@ -300,7 +295,7 @@ function highlightPlayerTurn (topic, data) {
 
 function createPlayerDisplay (topic, playerList) {
   playerList.forEach(player => {
-    _createPlayerDisplayDOM(player)
+    _createPlayerDisplayDOM(player, playerList)
   })
 }
 
