@@ -42,7 +42,7 @@ If the next tile in front of a player is occupied by someone else's character, a
 
 ## Tools Used
 
-* The visual assets used in our project came from [Kenney](https://www.kenney.nl/)
+* The visual assets used in our project came from [Kenney](https://www.kenney.nl/).
   * [Backgrounds](https://www.kenney.nl/assets/background-elements-redux)
   * [Animals](https://www.kenney.nl/assets/animal-pack-redux)
   * [Characters](https://www.kenney.nl/assets/toon-characters-1)
@@ -58,11 +58,12 @@ If the next tile in front of a player is occupied by someone else's character, a
 
 ## Credits
 
-Link to our GitHub pages or to CREDITS.md.
-Our team is @Adrian.Moncada, @gabesenacom, and @Ubercj.
+Creature Clash was developed by [Chris Jones](https://github.com/ubercj), [Adrián Moncada](https://github.com/Adrian-ignaciomoncada), and [Gabriel Sena](https://github.com/gabesenacom).
+
+Shout out to [Chicken Cha Cha Cha](https://boardgamegeek.com/boardgame/3570/chicken-cha-cha-cha) for inspring this game.
 
 And of course, thank you to [The Odin Project](https://www.theodinproject.com/) and the community on Discord for organizing this Game Jam and for helping us develop the knowledge and skills we used to make this game!
 
 ## License
 
-Creature Clash is released under the [ISC License](./LICENSE.md).
+Creature Clash is released under the [ISC License](./LICENSE.md). Please contact one of us if you would like to use any part of our game for any reason.
