@@ -1,6 +1,7 @@
 import { memoryCard } from './memoryCard'
 import { getNextCardPosition } from './memoryCardController'
 import { imageList } from './imageList'
+import { sortRandomArray } from './utils'
 
 function getPlayerById (array, id) {
   return array.filter(player => player.id === id)[0]
@@ -20,15 +21,26 @@ const ComputerPlayer = (name, iconSrc, id) => {
   const prototype = Player(name, iconSrc, id, true)
   let images = []
 
-  function _hasImage(cardImage, position) {
-    return images.filter(
+  function _hasImage (cardImage, position) {
+    return (
+      images.filter(
         image => image.cardImage == cardImage && image.position == position
       ).length > 0
+    )
   }
-  
+
   function memorize (cardImage, position) {
+    reduceMemory()
     let memory = { cardImage, position }
     if (!_hasImage(cardImage, position)) images.push(memory)
+  }
+
+  function reduceMemory () {
+    let newImages = [...sortRandomArray(images)]
+    if (images.length > 9) {
+      newImages.splice(1, 1)
+      images = newImages
+    }
   }
 
   function _getSameImage (anotherImage) {
