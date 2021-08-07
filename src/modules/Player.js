@@ -29,8 +29,8 @@ const ComputerPlayer = (name, iconSrc, id) => {
     )
   }
 
-  function memorize (cardImage, position) {
-    reduceMemory()
+  function memorize (cardImage, position, hasHumamEnemy) {
+    if(hasHumamEnemy) reduceMemory()
     let memory = { cardImage, position }
     if (!_hasImage(cardImage, position)) images.push(memory)
   }
