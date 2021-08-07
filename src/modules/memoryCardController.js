@@ -68,7 +68,7 @@ function init (playerList) {
     StaticCardList.moveToEndIfReach(cardPlayerDOM)
   }, 300)
 
-  Game.callAi()
+  setTimeout(() => Game.callAi(), 2000)
 }
 
 export { init, getNextCardPosition, getNextPlayerPosition }

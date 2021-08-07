@@ -1,30 +1,60 @@
 #log { 
   position: fixed;
-  bottom: 0;
+  top: 0;
   z-index: 1;
   width: 50%;
   font-size: 1.25rem;
 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
   padding: 20px;
   border-radius: 10px;
   box-shadow: -4px 5px grey;
-  margin-bottom: 3rem;
+  margin-top: 120px;
   
-  background-color: rgba(255, 228, 196, 0.801);
+  background-color: rgba(255, 228, 196, 0.9);
 
-  &[data-type="success"] {
-    box-shadow: -4px 5px green;
+  &[data-type="success"],
+  &[data-type="gameover"] {
+    box-shadow: -4px 5px #06D6A0;
   }
 
   &[data-type="warning"] {
-    box-shadow: -4px 5px yellow;
+    box-shadow: -4px 5px #FCBF49;
   }
 
   &[data-type="error"] {
-    box-shadow: -4px 5px red;
+    box-shadow: -4px 5px #f94144;
   }
 
   &:hover {
     cursor: pointer;
+  }
+
+  &.cursor-normal:hover {
+    cursor: default;
+  }
+
+  button {
+    border: none;
+    background: none;
+    outline: none;
+    text-align: center;
+    font-size: inherit;
+  }
+
+  a {
+    text-decoration: none;
+    color: #000300;
+    padding: 0.8rem 0.8rem;
+    transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    border-radius: 0.5rem;
+
+    &:hover {
+      color: #fff;
+      background-color: #000300;
+    }
   }
 }

@@ -8,9 +8,19 @@ const _createLogDOMElement = () => {
   return element
 }
 
+function _clickToHide() {
+  this.classList.add('hidden')
+}
 
-function _clickToHide(logDOM) {
-  logDOM.addEventListener('click', () => logDOM.classList.add('hidden'))
+function _showPlayAgainButton(logDOM) {
+  let playAgainLink = document.createElement("a")
+  playAgainLink.textContent = 'Play Again?'
+  playAgainLink.href = "/"
+
+  let playAgainButton = document.createElement("button")
+
+  playAgainButton.appendChild(playAgainLink)
+  logDOM.appendChild(playAgainLink)
 }
 
 const logDOM = _createLogDOMElement()
@@ -23,8 +33,16 @@ function sendLogMessage(logDOM, type, message) {
   logDOM.setAttribute("data-type", type)
   logDOM.setAttribute("id", 'log')
   logDOM.textContent = message
+
+  if (type === "gameover") {
+    _showPlayAgainButton(logDOM)
+    logDOM.removeEventListener('click', _clickToHide)
+    logDOM.classList.add('cursor-normal')
+    return
+  }
+
   let pendingLog = setTimeout(() => logDOM.classList.add("hidden"), 4000)
-  _clickToHide(logDOM, pendingLog)
+  logDOM.addEventListener('click', _clickToHide)
   pendingLogs.push(pendingLog)
 }
 
@@ -49,6 +67,8 @@ function convertTypeToStringType(type_num) {
       return 'warning'
     case 4:
       return 'error'
+    case 5:
+      return 'gameover'
   }
   return 'info'
 }
