@@ -21,7 +21,7 @@ This game is an entry for the [2021 Game Jam](https://itch.io/jam/top-jam-1) org
 
 We had a lot of ideas for our game, but we eventually settled on Creature Clash, a memory matching card game heavily inspired by the existing board game [Chicken Cha Cha Cha](https://boardgamegeek.com/boardgame/3570/chicken-cha-cha-cha).
 
-Creating this game was challenging in a lot of ways - our development team consisted of 3 complete strangers, each living in a different country and with varying levels of skills and experience. For some of us, it was the first time collaborating on a project rather than going solo. We all worked in our spare time, juggling this project with studying, day jobs and job searches. Add to this that we communicated solely in English and only one of us is a native speaker, so it took a little while for us to all get on the same page and establish a good work flow.
+Creating this game was challenging in a lot of ways - our development team consisted of 3 complete strangers, each living in a different country and with varying levels of skills and experience. For some of us, it was our first time collaborating on a project rather than going solo. We all worked in our spare time, juggling this project with studying, day jobs and job searches. Add to this that we communicated solely in English and only one of us is a native speaker, so it took a little while for us to all get on the same page and establish a good work flow.
 
 Despite all of this... making this game was a blast! We all learned so much from each other, and built friendships that will last well after we submit the final version of our game.
 
@@ -60,7 +60,7 @@ If the next tile in front of a player is occupied by someone else's character, a
 
 Creature Clash was developed by [Chris Jones](https://github.com/ubercj), [Adrián Moncada](https://github.com/Adrian-ignaciomoncada), and [Gabriel Sena](https://github.com/gabesenacom).
 
-Shout out to [Chicken Cha Cha Cha](https://boardgamegeek.com/boardgame/3570/chicken-cha-cha-cha) for inspring this game.
+Shout out to [Chicken Cha Cha Cha](https://boardgamegeek.com/boardgame/3570/chicken-cha-cha-cha) for inspiring this game.
 
 And of course, thank you to [The Odin Project](https://www.theodinproject.com/) and the community on Discord for organizing this Game Jam and for helping us develop the knowledge and skills we used to make this game!
 
