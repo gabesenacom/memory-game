@@ -63,7 +63,7 @@ export const Game = (() => {
     }
 
     if (playerTurn.ai) {
-      setTimeout(() => callAi(), 1100)
+      setTimeout(() => callAi(), 2000)
     }
   }
 
