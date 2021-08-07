@@ -15,7 +15,7 @@ function _clickToHide() {
 function _showPlayAgainButton(logDOM) {
   let playAgainLink = document.createElement("a")
   playAgainLink.textContent = 'Play Again?'
-  playAgainLink.href = "/"
+  playAgainLink.href = "https://ubercj.itch.io/creature-clash"
 
   let playAgainButton = document.createElement("button")
 
