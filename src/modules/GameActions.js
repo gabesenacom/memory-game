@@ -18,16 +18,19 @@ export const GameActions = (() => {
     while (nextCard.hasPlayer()) {
       let opponent = nextCard.getPlayer()
       opponent = getPlayerById(Game.players, opponent.id)
-      Game.getPlayerTurn().finish_line += opponent.finish_line
-      PubSub.publish(TOPIC.UPDATE_FINISH_LINE, Game.getPlayerTurn())
-      opponent.finish_line = 0
-      PubSub.publish(TOPIC.UPDATE_FINISH_LINE, opponent)
+      
+      if (opponent.finish_line > 0) {
+        opponent.finish_line -= 1
+        Game.getPlayerTurn().finish_line += 1
+        PubSub.publish(TOPIC.UPDATE_FINISH_LINE, opponent)
+        PubSub.publish(TOPIC.UPDATE_FINISH_LINE, Game.getPlayerTurn())
+      }
 
       PubSub.publish(TOPIC.SEND_LOG, {
         type: 2,
         message: `${Game.getPlayerTurn().name} jumped over ${opponent.name} and stole their hearts!`
       })
-
+      
       if (nextCard.hasPlayer() && opponent.id == Game.getPlayerTurn().id) break
       if (nextCard.hasPlayer()) {
         nextCardPosition = getNextCardPosition(nextCardPosition)

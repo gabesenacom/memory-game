@@ -17,10 +17,11 @@ export const Game = (() => {
       targetCard.flipImage()
       blockFlip = false
     }, 1000)
+    let hasHumanPlayers = players.some((player) => !player.ai) 
     players
       .filter(player => player.ai)
       .forEach(player =>
-        player.memorize(targetCard.getRealImageSrc(), targetCardIndex)
+        player.memorize(targetCard.getRealImageSrc(), targetCardIndex, hasHumanPlayers)
       )
   }
 
